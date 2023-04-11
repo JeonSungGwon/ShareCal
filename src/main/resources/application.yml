@@ -9,17 +9,10 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    main_db:
-      password: wjstjd741
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      username: root
-      url: jdbc:mysql://localhost:3306/firstproject_db?useUnicode=true&characterEncoding=UTF-8
-
-    security_db:
-      password: wjstjd741
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      username: root
-      url: jdbc:mysql://localhost:3306/security?useUnicode=true&characterEncoding=UTF-8
+    password: wjstjd741
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    url: jdbc:mysql://3.34.130.154:3306/firstproject_db?useUnicode=true&characterEncoding=UTF-8
 
 
   sql:
