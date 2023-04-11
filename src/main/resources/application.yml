@@ -1,0 +1,52 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        default_batch_fetch_size: '1000'
+        format_sql: 'false'
+        show_sql: 'true'
+    defer-datasource-initialization: 'true'
+    hibernate:
+      ddl-auto: update
+  datasource:
+##    main_db:
+#      password: wjstjd741
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+#      username: root
+#      url: jdbc:mysql://localhost:3306/firstproject_db?useUnicode=true&characterEncoding=UTF-8
+
+#    security_db:
+      password: wjstjd741
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      url: jdbc:mysql://localhost:3306/security?useUnicode=true&characterEncoding=UTF-8
+
+
+  sql:
+    init:
+      schema-locations: classpath:data.sql
+      mode: never
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 96671096559-bck5buk8jv7ngte56g3uqhpjf3frnu9h.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+        SQL: DEBUG
+
+
+

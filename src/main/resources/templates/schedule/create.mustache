@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Schedule</title>
+</head>
+<body>
+<h1>Create Schedule</h1>
+<form method="post" action="/schedules/create">
+    <label for="title">Title:</label><br>
+    <input type="text" id="title" name="title" value="{{#schedule}}{{title}}{{/schedule}}"><br>
+    {{#errors}}
+        <p style="color: red">{{.}}</p>
+    {{/errors}}
+
+    <label for="startDateTime">Start Date and Time:</label><br>
+    <input type="datetime-local" id="startDateTime" name="startDateTime" value="{{#schedule}}{{startDateTime}}{{/schedule}}"><br>
+    {{#errors}}
+        <p style="color: red">{{.}}</p>
+    {{/errors}}
+    <label for="endDateTime">End Date and Time:</label><br>
+    <input type="datetime-local" id="endDateTime" name="endDateTime" value="{{#schedule}}{{endDateTime}}{{/schedule}}"><br>
+    {{#errors}}
+        <p style="color: red">{{.}}</p>
+    {{/errors}}
+
+    <br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>

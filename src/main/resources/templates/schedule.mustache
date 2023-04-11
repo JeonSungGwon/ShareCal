@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule List</title>
+
+</head>
+<body>
+<h1>Schedule List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Start Date/Time</th>
+        <th>End Date/Time</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#schedules}}
+        <tr>
+            <td>{{title}}</td>
+            <td>{{startDateTime}}</td>
+            <td>{{endDateTime}}</td>
+            <td>
+                <a href="/schedules/{{id}}">View</a>
+                <a href="/schedules/{{id}}/edit">Edit</a>
+                <form method="post" action="/schedules/{{id}}/delete">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    {{/schedules}}
+    </tbody>
+</table>
+<a href="/schedules/new">Create new schedule</a>
+</body>
+</html>
