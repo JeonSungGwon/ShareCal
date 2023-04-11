@@ -3,6 +3,7 @@ package com.example.Capstone.security.repository;
 import com.example.Capstone.security.model.User;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 // JpaRepository 를 상속하면 자동 컴포넌트 스캔됨.
 @Qualifier("security_db")
+@Repository
 public interface UserRepository extends JpaRepository<User, Integer>{
 	// SELECT * FROM user WHERE username = ?1
 	User findByUsername(String username);
