@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Qualifier("main_db")
+
 public interface ScheduleParticipantRepository extends JpaRepository<ScheduleParticipant, Long> {
 
     List<ScheduleParticipant> findBySchedulesId(Long scheduleId);

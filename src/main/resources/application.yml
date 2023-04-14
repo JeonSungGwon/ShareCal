@@ -14,32 +14,13 @@ spring:
     username: root
     url: jdbc:mysql://3.34.130.154:3306/mysql?useUnicode=true&characterEncoding=UTF-8
 
-
   sql:
     init:
       schema-locations: classpath:data.sql
       mode: never
 
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: 96671096559-bck5buk8jv7ngte56g3uqhpjf3frnu9h.apps.googleusercontent.com
-            client-secret: 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
-            scope:
-              - email
-              - profile
 
-logging:
-  level:
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
-        SQL: DEBUG
+
 
 
 
