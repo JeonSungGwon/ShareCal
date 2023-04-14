@@ -7,7 +7,7 @@ spring:
         show_sql: 'true'
     defer-datasource-initialization: 'true'
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
   datasource:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
