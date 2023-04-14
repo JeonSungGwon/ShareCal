@@ -9,10 +9,10 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    password: wjstjd741
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    url: jdbc:mysql://localhost:3306/firstproject_db?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://15.165.204.96:3306/Schedule?guseUnicode=true&characterEncoding=UTF-8
 
   sql:
     init:
