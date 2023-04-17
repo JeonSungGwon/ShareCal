@@ -28,6 +28,8 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
+
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
