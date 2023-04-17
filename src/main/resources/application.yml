@@ -12,18 +12,21 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    url: jdbc:mysql://15.165.204.96:3306/Schedule?guseUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/Schedule?guseUnicode=true&characterEncoding=UTF-8
 
   sql:
     init:
       schema-locations: classpath:data.sql
       mode: never
+jwt:
+  secret: mySecretasdsadaskdvksnkansdkjnajsdnsakdaskjdnaskjdnaskdsadasdasdhsakjdhsajdhajajsdhjkdjkdakshskjdshajdskjsksahdkjaksdassjdashjdsahjhkjsdhaksksdadkjkahdakskjdshkjdshkjdsakjdhsa
 logging:
   level:
     # 패키지 레벨 설정
     org.springframework: INFO
     # 클래스 레벨 설정
     com.example.project.Controller: DEBUG
+
 
 
 

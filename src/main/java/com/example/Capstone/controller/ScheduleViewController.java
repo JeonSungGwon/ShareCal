@@ -30,7 +30,7 @@ public class ScheduleViewController {
 
     @GetMapping("/{id}")
     public String getSchedule(@PathVariable Long id, Model model) {
-        ScheduleDto schedule = scheduleService.getScheduleById(id);
+        ScheduleDto schedule = scheduleService.getScheduleById  (id);
         model.addAttribute("schedule", schedule);
         return "schedule/detail";
     }

@@ -1,5 +1,6 @@
 package com.example.Capstone.service;
 
+import com.example.Capstone.SimpleGrantedAuthority;
 import com.example.Capstone.dto.ScheduleParticipantDto;
 import com.example.Capstone.entity.ScheduleParticipant;
 import com.example.Capstone.repository.ScheduleParticipantRepository;

@@ -21,11 +21,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation "mysql:mysql-connector-java:8.0.27"
 	implementation 'org.modelmapper:modelmapper:2.4.4'
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
-//	implementation 'org.springframework.security:spring-security-oauth2-client'
-//	implementation 'com.auth0:java-jwt:3.12.0'
-	//implementation 'org.springframework.security.oauth:spring-security-oauth2:2.5.0.RELEASE'
-	//implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }
