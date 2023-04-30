@@ -5,6 +5,7 @@ import com.example.Capstone.dto.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,12 +23,13 @@ import java.util.stream.Collectors;
 
 
 @Component
+@Getter
 @Slf4j
 public class TokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 600 * 30;
     private final Key key;
 
 
@@ -68,6 +70,7 @@ public class TokenProvider {
                 .tokenExpiresIn(tokenExpiresIn.getTime())
                 .build();
     }
+
 
     public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);

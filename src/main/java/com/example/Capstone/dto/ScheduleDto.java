@@ -17,12 +17,14 @@ public class ScheduleDto {
     private LocalDateTime startDateTime;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime endDateTime;
+
+    private Long memberId;
+
     public ScheduleDto() {
         this.id = null;
         this.title = "";
         this.startDateTime = LocalDateTime.now();
         this.endDateTime = LocalDateTime.now().plusHours(1);
-
     }
 
     public static ScheduleDto from(Schedule schedule) {
@@ -31,6 +33,9 @@ public class ScheduleDto {
         scheduleDto.setTitle(schedule.getTitle());
         scheduleDto.setStartDateTime(schedule.getStartDateTime());
         scheduleDto.setEndDateTime(schedule.getEndDateTime());
+        if (schedule.getMember() != null) {
+            scheduleDto.setMemberId(schedule.getMember().getId());
+        }
         return scheduleDto;
     }
 }

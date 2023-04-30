@@ -39,5 +39,4 @@ public class AuthService {
 
         return tokenProvider.generateTokenDto(authentication);
     }
-
 }

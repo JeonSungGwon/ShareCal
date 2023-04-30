@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class MemberResponseDto {
+
+    private Long id;
     private String email;
     private String nickname;
 
@@ -18,6 +20,7 @@ public class MemberResponseDto {
         return MemberResponseDto.builder()
                 .email(member.getEmail())
                 .nickname(member.getNickname())
+                .id(member.getId())
                 .build();
     }
 }
