@@ -23,8 +23,8 @@ public class ScheduleDto {
     public ScheduleDto() {
         this.id = null;
         this.title = "";
-        this.startDateTime = LocalDateTime.now();
-        this.endDateTime = LocalDateTime.now().plusHours(1);
+        this.startDateTime = null;
+        this.endDateTime = null;
     }
 
     public static ScheduleDto from(Schedule schedule) {
