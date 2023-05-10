@@ -13,7 +13,9 @@ repositories {
 }
 
 dependencies {
-	//롬복 추가!
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    //롬복 추가!
 	compileOnly "org.projectlombok:lombok"
 	annotationProcessor "org.projectlombok:lombok"
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -23,6 +25,7 @@ dependencies {
 	implementation 'org.modelmapper:modelmapper:2.4.4'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'

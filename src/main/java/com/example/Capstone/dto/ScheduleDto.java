@@ -27,6 +27,13 @@ public class ScheduleDto {
         this.endDateTime = LocalDateTime.now().plusHours(1);
     }
 
+    public  ScheduleDto(String title, LocalDateTime startDateTime, LocalDateTime endDateTime){
+        this.title = title;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+    }
+
+
     public static ScheduleDto from(Schedule schedule) {
         ScheduleDto scheduleDto = new ScheduleDto();
         scheduleDto.setId(schedule.getId());

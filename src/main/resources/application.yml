@@ -13,7 +13,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     url: jdbc:mysql://15.165.204.96:3306/Schedule?guseUnicode=true&characterEncoding=UTF-8
-
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   sql:
     init:
       schema-locations: classpath:data.sql
