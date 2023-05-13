@@ -50,7 +50,9 @@ public class ScheduleController {
         if(!sharedScheduleRepository.findByMemberId(member.getId()).isEmpty()){
             List<SharedSchedule> sharedSchedules =sharedScheduleRepository.findByMemberId(member.getId());
             for(SharedSchedule sharedSchedule : sharedSchedules){
-                schedules.add(sharedSchedule.getSchedule());
+                if(sharedSchedule.isApproved()) {
+                    schedules.add(sharedSchedule.getSchedule());
+                }
             }
         }
         return schedules.stream().map(schedule -> modelMapper.map(schedule, ScheduleDto.class)).collect(Collectors.toList());

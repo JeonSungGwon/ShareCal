@@ -87,7 +87,6 @@ public class GroupController {
         Member member = memberRepository.findById(myInfoBySecurity.getId()).orElseThrow(() -> new EntityNotFoundException("Member not found"));
 
         List<MyGroup> groups = member.getGroups(); // Member 엔티티에서 현재 사용자가 속한 그룹 리스트 가져오기
-        System.out.println(groups.get(1).getId());
 
 
         return groups.stream().map(group -> new GroupDto(group.getId(), group.getName(), group.getMembers()))

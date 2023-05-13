@@ -4,8 +4,10 @@ import com.example.Capstone.dto.MemberResponseDto;
 import com.example.Capstone.dto.MessageDto;
 import com.example.Capstone.entity.Member;
 import com.example.Capstone.entity.Message;
+import com.example.Capstone.entity.SharedSchedule;
 import com.example.Capstone.repository.MemberRepository;
 import com.example.Capstone.repository.MessageRepository;
+import com.example.Capstone.repository.SharedScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ import java.util.List;
 public class MessageService {
     private final MessageRepository messageRepository;
     private final MemberRepository memberRepository;
+    private final SharedScheduleRepository sharedScheduleRepository;
 
     private final MemberService memberService;
 
@@ -27,15 +30,19 @@ public class MessageService {
         MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
         Member sender = memberRepository.findByNickname(myInfoBySecurity.getNickname());
         Member receiver = memberRepository.findByNickname(messageDto.getReceiverName());
-        messageDto.setSenderName(receiver.getNickname());
+        messageDto.setSenderName(sender.getNickname());
 
 
         Message message = new Message();
         message.setReceiver(receiver);
         message.setSender(sender);
 
+        SharedSchedule sharedSchedule = sharedScheduleRepository.findById(messageDto.getSharedScheduleId()).orElse(null);
+        System.out.println(messageDto.getSharedScheduleId());
         message.setTitle(messageDto.getTitle());
         message.setContent(messageDto.getContent());
+        message.setSharedSchedule(sharedSchedule);
+        System.out.println(sharedSchedule);
         message.setDeletedByReceiver(false);
         message.setDeletedBySender(false);
         messageRepository.save(message);

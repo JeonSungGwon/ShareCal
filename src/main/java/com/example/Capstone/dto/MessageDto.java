@@ -13,13 +13,15 @@ public class MessageDto {
     private String content;
     private String senderName;
     private String receiverName;
+    private Long sharedScheduleId;
 
     public static MessageDto toDto(Message message) {
         return new MessageDto(
                 message.getTitle(),
                 message.getContent(),
                 message.getSender().getNickname(),
-                message.getReceiver().getNickname()
+                message.getReceiver().getNickname(),
+                message.getSharedSchedule().getId()
         );
     }
 }

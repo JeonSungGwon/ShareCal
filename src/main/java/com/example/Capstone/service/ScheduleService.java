@@ -1,6 +1,7 @@
 package com.example.Capstone.service;
 
 import com.example.Capstone.dto.MemberResponseDto;
+import com.example.Capstone.dto.MessageDto;
 import com.example.Capstone.dto.ScheduleDto;
 import com.example.Capstone.entity.Member;
 import com.example.Capstone.entity.Schedule;
@@ -30,14 +31,17 @@ public class ScheduleService {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
+    private final MessageService messageService;
+
     private final SharedScheduleRepository sharedScheduleRepository;
 
-    public ScheduleService(ScheduleRepository scheduleRepository, ModelMapper modelMapper, MemberRepository memberRepository,MemberService memberService, SharedScheduleRepository sharedScheduleRepository) {
+    public ScheduleService(ScheduleRepository scheduleRepository, ModelMapper modelMapper, MemberRepository memberRepository,MemberService memberService, SharedScheduleRepository sharedScheduleRepository, MessageService messageService) {
         this.scheduleRepository = scheduleRepository;
         this.modelMapper = modelMapper;
         this.memberRepository = memberRepository;
         this.memberService = memberService;
         this.sharedScheduleRepository = sharedScheduleRepository;
+        this.messageService=messageService;
     }
 
     public List<ScheduleDto> getAllSchedules() {
@@ -83,9 +87,24 @@ public class ScheduleService {
             SharedSchedule sharedSchedule = new SharedSchedule();
             sharedSchedule.setSchedule(savedSchedule);
             sharedSchedule.setMember(sharedWith);
+
+            sharedScheduleRepository.save(sharedSchedule); // 공유 스케줄 저장 후 아이디값이 생성됨
+
+            // 공유받는 멤버에게 메시지 전송
+            String messageTitle = "새로운 공유 스케줄이 도착했습니다.";
+            String messageContent = "아래의 스케줄을 확인해주세요.";
+            MessageDto messageDto = new MessageDto();
+            messageDto.setSenderName(myInfoBySecurity.getNickname());
+            messageDto.setReceiverName(sharedWith.getNickname());
+            messageDto.setTitle(messageTitle);
+            messageDto.setContent(messageContent);
+            messageDto.setSharedScheduleId(sharedSchedule.getId()); // 공유 스케줄 아이디값 설정
+            messageService.write(messageDto); // 메시지 전송
+
             return sharedSchedule;
         }).collect(Collectors.toList());
-        sharedScheduleRepository.saveAll(sharedSchedules);
+
+
 
         return modelMapper.map(savedSchedule, ScheduleDto.class);
     }

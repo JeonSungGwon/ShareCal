@@ -30,6 +30,11 @@ public class Message {
     private boolean deletedByReceiver;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shared_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    private SharedSchedule sharedSchedule;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Member sender;

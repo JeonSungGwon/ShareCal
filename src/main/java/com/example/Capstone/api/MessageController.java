@@ -3,7 +3,9 @@ package com.example.Capstone.api;
 import com.example.Capstone.dto.MemberResponseDto;
 import com.example.Capstone.dto.MessageDto;
 import com.example.Capstone.entity.Member;
+import com.example.Capstone.entity.SharedSchedule;
 import com.example.Capstone.repository.MemberRepository;
+import com.example.Capstone.repository.SharedScheduleRepository;
 import com.example.Capstone.service.MemberService;
 import com.example.Capstone.service.MessageService;
 import io.swagger.annotations.Api;
@@ -23,6 +25,8 @@ public class MessageController {
     private final MessageService messageService;
     private final MemberRepository memberRepository;
 
+    private final SharedScheduleRepository sharedScheduleRepository;
+
     private final MemberService memberService;
 
     @PostMapping
@@ -37,10 +41,18 @@ public class MessageController {
     public ResponseEntity<List<MessageDto>> receivedMessage() {
         MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
         Member received = memberRepository.findByNickname(myInfoBySecurity.getNickname());
-//        Member receiver = memberRepository.findByNickname(memberNickname); // 이 부분 고쳐야됨
         List<MessageDto> messages = messageService.receivedMessage(received);
         return ResponseEntity.ok(messages);
     }
+
+    @PostMapping("/accept")
+    public ResponseEntity<String> approveSharedSchedule(@RequestBody Long sharedScheduleId) {
+        SharedSchedule sharedSchedule = sharedScheduleRepository.findById(sharedScheduleId).orElse(null);
+        sharedSchedule.setApproved(true);
+        sharedScheduleRepository.save(sharedSchedule);
+        return ResponseEntity.ok("Shared Schedule approved successfully");
+    }
+
 
     @DeleteMapping("/received/{id}")
     @ApiOperation(value = "Delete a received message")
