@@ -67,7 +67,7 @@ public class ScheduleViewController {
         if (bindingResult.hasErrors()) {
             return "schedule/update";
         }
-        scheduleService.updateSchedule(id, scheduleDto);
+//        scheduleService.updateSchedule(id, scheduleDto);
         return "redirect:/schedules";
     }
 

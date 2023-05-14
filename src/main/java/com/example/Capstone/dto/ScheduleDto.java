@@ -1,10 +1,14 @@
 package com.example.Capstone.dto;
 
+import com.example.Capstone.entity.Image;
 import com.example.Capstone.entity.Schedule;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,6 +22,7 @@ public class ScheduleDto {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime endDateTime;
 
+    private List<ImageDto> images;
     private Long memberId;
 
     public ScheduleDto() {
@@ -45,4 +50,5 @@ public class ScheduleDto {
         }
         return scheduleDto;
     }
+
 }

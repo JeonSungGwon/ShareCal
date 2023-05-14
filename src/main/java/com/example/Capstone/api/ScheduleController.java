@@ -1,7 +1,9 @@
 package com.example.Capstone.api;
 
+import com.example.Capstone.dto.ImageDto;
 import com.example.Capstone.dto.MemberResponseDto;
 import com.example.Capstone.dto.ScheduleDto;
+import com.example.Capstone.entity.Image;
 import com.example.Capstone.entity.Member;
 import com.example.Capstone.entity.Schedule;
 import com.example.Capstone.entity.SharedSchedule;
@@ -13,8 +15,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.sql.Blob;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,15 +53,35 @@ public class ScheduleController {
         MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
         Member member = memberRepository.findById(myInfoBySecurity.getId()).orElseThrow(() -> new EntityNotFoundException("Member not found"));
         List<Schedule> schedules = member.getSchedules();
-        if(!sharedScheduleRepository.findByMemberId(member.getId()).isEmpty()){
-            List<SharedSchedule> sharedSchedules =sharedScheduleRepository.findByMemberId(member.getId());
-            for(SharedSchedule sharedSchedule : sharedSchedules){
-                if(sharedSchedule.isApproved()) {
+        if (!sharedScheduleRepository.findByMemberId(member.getId()).isEmpty()) {
+            List<SharedSchedule> sharedSchedules = sharedScheduleRepository.findByMemberId(member.getId());
+            for (SharedSchedule sharedSchedule : sharedSchedules) {
+                if (sharedSchedule.isApproved()) {
                     schedules.add(sharedSchedule.getSchedule());
                 }
             }
         }
-        return schedules.stream().map(schedule -> modelMapper.map(schedule, ScheduleDto.class)).collect(Collectors.toList());
+        List<ScheduleDto> scheduleDtos = new ArrayList<>();
+        for (Schedule schedule : schedules) {
+            ScheduleDto scheduleDto = modelMapper.map(schedule, ScheduleDto.class);
+
+            // 이미지 처리
+            List<Image> images = schedule.getImages();
+            if (images != null && !images.isEmpty()) {
+                List<ImageDto> imageDtos = new ArrayList<>();
+                for (Image image : images) {
+                    ImageDto imageDto = new ImageDto();
+                    byte[] imageBytes = image.getImageData();
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                    imageDto.setImageData(base64Image);
+                    imageDtos.add(imageDto);
+                }
+                scheduleDto.setImages(imageDtos);
+            }
+
+            scheduleDtos.add(scheduleDto);
+        }
+        return scheduleDtos;
     }
 
     @GetMapping("")
@@ -81,9 +107,15 @@ public class ScheduleController {
     }
 
     @PatchMapping("/{id}")
-    public ScheduleDto updateSchedule(@PathVariable Long id, @RequestBody ScheduleDto scheduleDto) {
-        return scheduleService.updateSchedule(id, scheduleDto);
+    public ScheduleDto updateSchedule(@PathVariable Long id, @RequestBody ScheduleDto scheduleDto,@RequestParam(required = false) MultipartFile image) {
+        return scheduleService.updateSchedule(id, scheduleDto, image);
     }
+
+    @PatchMapping("/image/{id}")
+    public ScheduleDto updateImage(@PathVariable Long id,@RequestParam(required = false) MultipartFile image) {
+        return scheduleService.updateImage(id, image);
+    }
+
 
     @DeleteMapping("/{id}")
     public void deleteSchedule(@PathVariable Long id) {

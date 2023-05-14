@@ -3,6 +3,7 @@ package com.example.Capstone.service;
 import com.example.Capstone.dto.MemberResponseDto;
 import com.example.Capstone.dto.MessageDto;
 import com.example.Capstone.dto.ScheduleDto;
+import com.example.Capstone.entity.Image;
 import com.example.Capstone.entity.Member;
 import com.example.Capstone.entity.Schedule;
 import com.example.Capstone.entity.SharedSchedule;
@@ -13,8 +14,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -110,9 +115,10 @@ public class ScheduleService {
     }
 
     @Transactional
-    public ScheduleDto updateSchedule(Long id, ScheduleDto scheduleDto) {
+    public ScheduleDto updateSchedule(Long id, ScheduleDto scheduleDto, @RequestParam MultipartFile image)  {
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No such schedule"));
+
         if(scheduleDto.getTitle() != null && !scheduleDto.getTitle().isEmpty()) {
             schedule.setTitle(scheduleDto.getTitle());
         }
@@ -121,6 +127,39 @@ public class ScheduleService {
         }
         if(scheduleDto.getEndDateTime() != null) {
             schedule.setEndDateTime(scheduleDto.getEndDateTime());
+        }
+        if (image != null && !image.isEmpty()) {
+            try {
+                byte[] imageData = image.getBytes();
+                Image newImage = new Image();
+                newImage.setImageData(imageData);
+                newImage.setCreatedAt(LocalDateTime.now());
+                newImage.setSchedule(schedule);
+                schedule.getImages().add(newImage);
+            }
+            catch (IOException e){
+                throw new RuntimeException("Failed to read image file", e);
+            }
+        }
+        Schedule updatedSchedule = scheduleRepository.save(schedule);
+        return modelMapper.map(updatedSchedule, ScheduleDto.class);
+    }
+    @Transactional
+    public ScheduleDto updateImage(Long id, @RequestParam MultipartFile image)  {
+        Schedule schedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("No such schedule"));
+        if (image != null && !image.isEmpty()) {
+            try {
+                byte[] imageData = image.getBytes();
+                Image newImage = new Image();
+                newImage.setImageData(imageData);
+                newImage.setCreatedAt(LocalDateTime.now());
+                newImage.setSchedule(schedule);
+                schedule.getImages().add(newImage);
+            }
+            catch (IOException e){
+                throw new RuntimeException("Failed to read image file", e);
+            }
         }
         Schedule updatedSchedule = scheduleRepository.save(schedule);
         return modelMapper.map(updatedSchedule, ScheduleDto.class);
