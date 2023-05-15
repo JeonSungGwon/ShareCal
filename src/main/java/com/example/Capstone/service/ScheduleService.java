@@ -97,7 +97,7 @@ public class ScheduleService {
 
             // 공유받는 멤버에게 메시지 전송
             String messageTitle = "새로운 공유 스케줄이 도착했습니다.";
-            String messageContent = "아래의 스케줄을 확인해주세요.";
+            String messageContent = schedule.getTitle()+"";
             MessageDto messageDto = new MessageDto();
             messageDto.setSenderName(myInfoBySecurity.getNickname());
             messageDto.setReceiverName(sharedWith.getNickname());
