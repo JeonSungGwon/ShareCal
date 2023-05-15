@@ -17,6 +17,7 @@ import java.util.List;
 public class ScheduleDto {
     private Long id;
     private String title;
+    private String content;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime startDateTime;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -28,12 +29,14 @@ public class ScheduleDto {
     public ScheduleDto() {
         this.id = null;
         this.title = "";
+        this.content = "";
         this.startDateTime = LocalDateTime.now();
         this.endDateTime = LocalDateTime.now().plusHours(1);
     }
 
-    public  ScheduleDto(String title, LocalDateTime startDateTime, LocalDateTime endDateTime){
+    public  ScheduleDto(String title, String content, LocalDateTime startDateTime, LocalDateTime endDateTime){
         this.title = title;
+        this.content = content;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
     }
@@ -43,6 +46,7 @@ public class ScheduleDto {
         ScheduleDto scheduleDto = new ScheduleDto();
         scheduleDto.setId(schedule.getId());
         scheduleDto.setTitle(schedule.getTitle());
+        scheduleDto.setContent(schedule.getContent());
         scheduleDto.setStartDateTime(schedule.getStartDateTime());
         scheduleDto.setEndDateTime(schedule.getEndDateTime());
         if (schedule.getMember() != null) {

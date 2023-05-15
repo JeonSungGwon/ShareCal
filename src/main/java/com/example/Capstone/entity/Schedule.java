@@ -24,8 +24,8 @@ public class Schedule {
     @Column(nullable = false)
     private String title;
 
-    //@Column
-    //private String comment;
+    @Column
+    private String content;
 
     @Column(nullable = false)
     private LocalDateTime startDateTime;

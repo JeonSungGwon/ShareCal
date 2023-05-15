@@ -122,6 +122,9 @@ public class ScheduleService {
         if(scheduleDto.getTitle() != null && !scheduleDto.getTitle().isEmpty()) {
             schedule.setTitle(scheduleDto.getTitle());
         }
+        if(scheduleDto.getContent() != null && !scheduleDto.getContent().isEmpty()) {
+            schedule.setContent(scheduleDto.getContent());
+        }
         if(scheduleDto.getStartDateTime() != null) {
             schedule.setStartDateTime(scheduleDto.getStartDateTime());
         }
