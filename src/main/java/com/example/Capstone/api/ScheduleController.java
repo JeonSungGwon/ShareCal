@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import javax.swing.*;
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -101,7 +102,7 @@ public class ScheduleController {
 
     @PostMapping("/shared")
     public ResponseEntity<ScheduleDto> createSharedSchedule(@RequestBody ScheduleDto scheduleDto,
-                                                            @RequestParam List<Long> sharedWithIds) {
+                                                            @RequestParam List<String> sharedWithIds) {
         ScheduleDto savedSchedule = scheduleService.createSharedSchedule(scheduleDto, sharedWithIds);
         return ResponseEntity.ok(savedSchedule);
     }

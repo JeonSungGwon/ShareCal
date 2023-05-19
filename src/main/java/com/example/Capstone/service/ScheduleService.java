@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import javax.swing.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class ScheduleService {
     }
 
     @Transactional
-    public ScheduleDto createSharedSchedule(ScheduleDto scheduleDto, List<Long> sharedWithIds) {
+    public ScheduleDto createSharedSchedule(ScheduleDto scheduleDto, List<String> sharedWithIds) {
         MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
         scheduleDto.setMemberId(myInfoBySecurity.getId());
 
@@ -87,7 +88,7 @@ public class ScheduleService {
         Schedule savedSchedule = scheduleRepository.save(schedule);
 
         // 공유 대상 멤버들에 대한 공유 스케줄 정보 저장
-        List<Member> sharedWithMembers = memberRepository.findAllById(sharedWithIds);
+        List<Member> sharedWithMembers = memberRepository.findAllByEmail(sharedWithIds);
         List<SharedSchedule> sharedSchedules = sharedWithMembers.stream().map(sharedWith -> {
             SharedSchedule sharedSchedule = new SharedSchedule();
             sharedSchedule.setSchedule(savedSchedule);
