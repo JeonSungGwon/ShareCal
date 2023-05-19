@@ -88,7 +88,7 @@ public class ScheduleService {
         Schedule savedSchedule = scheduleRepository.save(schedule);
 
         // 공유 대상 멤버들에 대한 공유 스케줄 정보 저장
-        List<Member> sharedWithMembers = memberRepository.findAllByEmail(sharedWithIds);
+        List<Member> sharedWithMembers = memberRepository.findAllByEmailIn(sharedWithIds);
         List<SharedSchedule> sharedSchedules = sharedWithMembers.stream().map(sharedWith -> {
             SharedSchedule sharedSchedule = new SharedSchedule();
             sharedSchedule.setSchedule(savedSchedule);
