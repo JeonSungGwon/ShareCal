@@ -8,7 +8,7 @@ spring:
     defer-datasource-initialization: 'true'
     hibernate:
       ddl-auto: update
-      # 고쳐봤습니다..........................................
+      # 고쳐봤습니다..........................................링링리이리이리일ㅇ
   datasource:
     password: wjstjd741
     driver-class-name: com.mysql.cj.jdbc.Driver
