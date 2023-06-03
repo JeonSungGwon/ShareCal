@@ -68,10 +68,10 @@ jobs:
         run: |
           aws s3 cp \
             --region ap-northeast-2 \
-            ./spring-build.zip s3://jeonsg-bucket2
+            ./spring-build.zip s3://jeonsg2-bucket
       # 추가
       - name: Code Deploy
         run: aws deploy create-deployment --application-name spring-deploy
           --deployment-config-name CodeDeployDefault.OneAtATime
           --deployment-group-name spring-deploy-group
-          --s3-location bucket=jeonsg-bucket2,bundleType=zip,key=spring-build.zip
+          --s3-location bucket=jeonsg2-bucket,bundleType=zip,key=spring-build.zip
