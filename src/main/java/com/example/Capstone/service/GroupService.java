@@ -31,10 +31,6 @@ public class GroupService {
         MyGroup myGroup = MyGroup.builder()
                 .name(groupDto.getName())
                 .build();
-        groupDto.getMemberIds().forEach(memberId -> {
-            Member member = memberService.getMemberById(memberId);
-            myGroup.getMembers().add(member);
-        });
         return groupRepository.save(myGroup).getId();
     }
 
