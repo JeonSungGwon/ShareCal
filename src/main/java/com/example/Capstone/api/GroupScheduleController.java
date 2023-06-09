@@ -24,7 +24,7 @@ public class GroupScheduleController {
         return ResponseEntity.ok(id);
     }
 
-    @PatchMapping("{groupId}/{groupScheduleId}")
+    @PatchMapping("/{groupScheduleId}")
     public GroupScheduleDto updateGroupSchedule(@PathVariable Long groupScheduleId, @RequestBody GroupScheduleDto groupScheduleDto) {
         return groupScheduleService.updateGroupSchedule(groupScheduleId, groupScheduleDto);
     }
