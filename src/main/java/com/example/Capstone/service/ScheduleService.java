@@ -1,5 +1,6 @@
 package com.example.Capstone.service;
 
+import com.example.Capstone.config.SecurityUtil;
 import com.example.Capstone.dto.MemberResponseDto;
 import com.example.Capstone.dto.MessageDto;
 import com.example.Capstone.dto.ScheduleDto;
@@ -172,11 +173,27 @@ public class ScheduleService {
     public void deleteSchedule(Long id) {
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid schedule ID: " + id));
-        List<Image> images = schedule.getImages(); // 예시: 스케줄과 이미지는 일대다 관계라고 가정
-        for (Image image : images) {
-            imageRepository.delete(image);
+        List<SharedSchedule> sharedSchedules = sharedScheduleRepository.findByScheduleId(id);
+
+        for (SharedSchedule sharedSchedule : sharedSchedules) {
+
+            if (sharedSchedule.getMember().getId().equals(SecurityUtil.getCurrentMemberId())) {
+                sharedScheduleRepository.delete(sharedSchedule);
+            }
         }
-        scheduleRepository.deleteById(id);
+
+        if(schedule.getMember().getId().equals(SecurityUtil.getCurrentMemberId())){
+
+            for (SharedSchedule sharedSchedule : sharedSchedules) {
+                 sharedScheduleRepository.delete(sharedSchedule);
+                }
+            List<Image> images = schedule.getImages(); // 예시: 스케줄과 이미지는 일대다 관계라고 가정
+            for (Image image : images) {
+                imageRepository.delete(image);
+            }
+            scheduleRepository.delete(schedule);
+        }
+
     }
 
 }
