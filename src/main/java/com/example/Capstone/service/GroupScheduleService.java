@@ -63,7 +63,7 @@ public class GroupScheduleService {
             groupSchedule.setEndDateTime(groupScheduleDto.getEndDateTime());
         }
         if(groupScheduleDto.getGroupId() != null) {
-            groupSchedule.setMyGroup(myGroup);
+            groupSchedule.setMyGroup(myGroup); //가두리양식
         }
         GroupSchedule upadtedGroupSchedule = groupScheduleRepository.save(groupSchedule);
         return modelMapper.map(upadtedGroupSchedule, GroupScheduleDto.class);
