@@ -18,8 +18,6 @@ public class GroupDto {
     private List<Long> memberIds;
     private List<MemberDto> members;
     private Long ownerId;
-
-
     private String sharedCode;
 
     @Builder
@@ -34,5 +32,6 @@ public class GroupDto {
         this.members = members.stream()
                 .map(member -> new MemberDto(member.getId(), member.getEmail(), member.getNickname(), member.getAuthority(),member.getPhoneNumber()))
                 .collect(Collectors.toList());
+        this.sharedCode = sharedCode;
     }
 }
