@@ -46,7 +46,7 @@ public class MessageController {
     }
 
     @PostMapping("/accept/{id}")
-    public ResponseEntity<String> approveSharedSchedule(@PathVariable Long id, @RequestParam Long sharedScheduleId) {
+    public ResponseEntity<String> approveSharedSchedule(@PathVariable Long id, @RequestBody Long sharedScheduleId) {
         SharedSchedule sharedSchedule = sharedScheduleRepository.findById(sharedScheduleId).orElse(null);
         sharedSchedule.setApproved(true);
         sharedScheduleRepository.save(sharedSchedule);
