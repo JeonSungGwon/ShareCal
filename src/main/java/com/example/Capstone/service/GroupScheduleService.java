@@ -48,9 +48,11 @@ public class GroupScheduleService {
     }
 
     @Transactional
-    public GroupScheduleDto updateGroupSchedule(Long groupScheduleId, GroupScheduleDto groupScheduleDto) {
+    public GroupScheduleDto updateGroupSchedule(Long groupScheduleId,Long groupId, GroupScheduleDto groupScheduleDto) {
         GroupSchedule groupSchedule = groupScheduleRepository.findById(groupScheduleId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group schedule ID: " + groupScheduleId));
+        MyGroup myGroup = groupRepository.findById(groupId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid group ID: " + groupScheduleDto.getGroupId()));
         if(groupScheduleDto.getTitle() != null && !groupScheduleDto.getTitle().isEmpty()) {
             groupSchedule.setTitle(groupScheduleDto.getTitle());
         }
@@ -59,6 +61,9 @@ public class GroupScheduleService {
         }
         if(groupScheduleDto.getEndDateTime() != null) {
             groupSchedule.setEndDateTime(groupScheduleDto.getEndDateTime());
+        }
+        if(groupScheduleDto.getGroupId() != null) {
+            groupSchedule.setMyGroup(myGroup);
         }
         GroupSchedule upadtedGroupSchedule = groupScheduleRepository.save(groupSchedule);
         return modelMapper.map(upadtedGroupSchedule, GroupScheduleDto.class);

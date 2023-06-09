@@ -25,8 +25,8 @@ public class GroupScheduleController {
     }
 
     @PatchMapping("/{groupScheduleId}")
-    public GroupScheduleDto updateGroupSchedule(@PathVariable Long groupScheduleId, @RequestBody GroupScheduleDto groupScheduleDto) {
-        return groupScheduleService.updateGroupSchedule(groupScheduleId, groupScheduleDto);
+    public GroupScheduleDto updateGroupSchedule(@PathVariable Long groupScheduleId, @PathVariable Long groupId, @RequestBody GroupScheduleDto groupScheduleDto) {
+        return groupScheduleService.updateGroupSchedule(groupScheduleId, groupId, groupScheduleDto);
     }
 
     @DeleteMapping("/{groupScheduleId}")
