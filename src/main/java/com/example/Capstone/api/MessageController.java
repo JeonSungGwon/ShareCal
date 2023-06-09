@@ -46,7 +46,7 @@ public class MessageController {
     }
 
     @PostMapping("/accept/{id}")
-    public ResponseEntity<String> approveSharedSchedule(@PathVariable int id, @RequestBody Long sharedScheduleId) {
+    public ResponseEntity<String> approveSharedSchedule(@PathVariable Long id, @RequestBody Long sharedScheduleId) {
         SharedSchedule sharedSchedule = sharedScheduleRepository.findById(sharedScheduleId).orElse(null);
         sharedSchedule.setApproved(true);
         sharedScheduleRepository.save(sharedSchedule);
@@ -59,7 +59,7 @@ public class MessageController {
 
     @DeleteMapping("/received/{id}")
     @ApiOperation(value = "Delete a received message")
-    public ResponseEntity<Object> deleteReceivedMessage(@PathVariable int id, @RequestParam String memberNickname) {
+    public ResponseEntity<Object> deleteReceivedMessage(@PathVariable Long id, @RequestParam String memberNickname) {
         Member receiver = memberRepository.findByNickname(memberNickname);
         Object result = messageService.deleteMessageByReceiver(id, receiver);
         return ResponseEntity.ok(result);
@@ -75,7 +75,7 @@ public class MessageController {
 
     @DeleteMapping("/sent/{id}")
     @ApiOperation(value = "Delete a sent message")
-    public ResponseEntity<Object> deleteSentMessage(@PathVariable int id, @RequestParam String memberNickname) {
+    public ResponseEntity<Object> deleteSentMessage(@PathVariable Long id, @RequestParam String memberNickname) {
         Member sender = memberRepository.findByNickname(memberNickname); //
         Object result = messageService.deleteMessageBySender(id, sender);
         return ResponseEntity.ok(result);

@@ -70,7 +70,7 @@ public class MessageService {
 
     // 받은 편지 삭제
     @Transactional
-    public Object deleteMessageByReceiver(int id, Member user) {
+    public Object deleteMessageByReceiver(Long id, Member user) {
         Message message = messageRepository.findById(id).orElseThrow(() -> {
             return new IllegalArgumentException("메시지를 찾을 수 없습니다.");
         });
@@ -110,7 +110,7 @@ public class MessageService {
 
     // 보낸 편지 삭제
     @Transactional
-    public Object deleteMessageBySender(int id, Member member) {
+    public Object deleteMessageBySender(Long id, Member member) {
         Message message = messageRepository.findById(id).orElseThrow(() -> {
             return new IllegalArgumentException("메시지를 찾을 수 없습니다.");
         });
