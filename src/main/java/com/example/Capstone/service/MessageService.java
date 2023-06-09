@@ -74,18 +74,9 @@ public class MessageService {
         Message message = messageRepository.findById(id).orElseThrow(() -> {
             return new IllegalArgumentException("메시지를 찾을 수 없습니다.");
         });
+        messageRepository.delete(message);
 
-        if(user == message.getSender()) {
-            message.deleteByReceiver(); // 받은 사람에게 메시지 삭제
-            if (message.isDeleted()) {
-                // 받은사람과 보낸 사람 모두 삭제했으면, 데이터베이스에서 삭제요청
-                messageRepository.delete(message);
-                return "양쪽 모두 삭제";
-            }
-            return "한쪽만 삭제";
-        } else {
-            return new IllegalArgumentException("유저 정보가 일치하지 않습니다.");
-        }
+        return "삭제완료";
     }
 
 
