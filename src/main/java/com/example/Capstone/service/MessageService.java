@@ -70,13 +70,10 @@ public class MessageService {
 
     // 받은 편지 삭제
     @Transactional
-    public Object deleteMessageByReceiver(Long id, Member user) {
-        Message message = messageRepository.findById(id).orElseThrow(() -> {
-            return new IllegalArgumentException("메시지를 찾을 수 없습니다.");
-        });
+    public Object deleteMessageByReceiver(Long id) {
+        Message message = messageRepository.findById(id).orElse(null);
         messageRepository.delete(message);
-
-        return "삭제완료";
+        return "양쪽 모두 삭제";
     }
 
 

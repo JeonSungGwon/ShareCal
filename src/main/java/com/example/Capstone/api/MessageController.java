@@ -52,7 +52,7 @@ public class MessageController {
         sharedScheduleRepository.save(sharedSchedule);
         MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
         Member receiver = memberRepository.findByNickname(myInfoBySecurity.getNickname());
-        messageService.deleteMessageByReceiver(id, receiver);
+        messageService.deleteMessageByReceiver(id);
         return ResponseEntity.ok("Shared Schedule approved successfully");
     }
 
@@ -61,7 +61,7 @@ public class MessageController {
     @ApiOperation(value = "Delete a received message")
     public ResponseEntity<Object> deleteReceivedMessage(@PathVariable Long id, @RequestParam String memberNickname) {
         Member receiver = memberRepository.findByNickname(memberNickname);
-        Object result = messageService.deleteMessageByReceiver(id, receiver);
+        Object result = messageService.deleteMessageByReceiver(id);
         return ResponseEntity.ok(result);
     }
 
