@@ -21,12 +21,20 @@ public class MyGroup {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false, unique = true)
+    private String sharedCode;
+
     // 다대다 매핑을 위한 members 리스트
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "group_member",
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "member_id"))
     private List<Member> members = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    private Member owner;
+
 
     // Schedule 엔티티와 다대다 매핑을 위한 schedules 리스트
     @OneToMany(mappedBy = "myGroup")

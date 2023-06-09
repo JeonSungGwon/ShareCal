@@ -52,18 +52,17 @@ public class GroupController {
         return ResponseEntity.ok(savedGroupDto);
     }
 
-    @DeleteMapping("/{groupId}")
+    @DeleteMapping("owner/{groupId}")
     public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
         groupService.deleteGroup(groupId);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{groupId}/members")
-    public ResponseEntity<GroupDto> addMemberToGroup(@PathVariable Long groupId, @RequestBody MemberDto memberDto) {
-        groupService.addMemberToGroup(groupId, memberDto.getId());
-        GroupDto savedGroupDto = groupService.getGroup(groupId);
-        return ResponseEntity.ok(savedGroupDto);
-    }
+    //@PostMapping("/code")
+    //public ResponseEntity<GroupDto> addMemberToGroup(@RequestBody String sharedCode) {
+    //    GroupDto savedGroupDto = groupService.addMemberToGroup(sharedCode);
+    //    return ResponseEntity.ok(savedGroupDto);
+    // }
 
     @DeleteMapping("/{groupId}/members/{memberId}")
     public ResponseEntity<Void> removeMemberFromGroup(@PathVariable Long groupId, @PathVariable Long memberId) {
@@ -86,11 +85,27 @@ public class GroupController {
         MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
         Member member = memberRepository.findById(myInfoBySecurity.getId()).orElseThrow(() -> new EntityNotFoundException("Member not found"));
 
-        List<MyGroup> groups = member.getGroups(); // Member 엔티티에서 현재 사용자가 속한 그룹 리스트 가져오기
+        List<MyGroup> ownedGroups = member.getOwnedGroups(); // Member 엔티티에서 현재 사용자가 소유한 그룹 리스트 가져오기
+        List<MyGroup> memberGroups = member.getGroups(); // Member 엔티티에서 현재 사용자가 멤버로 참여한 그룹 리스트 가져오기
 
+        List<GroupDto> groupDtos = new ArrayList<>();
 
-        return groups.stream().map(group -> new GroupDto(group.getId(), group.getName(), group.getMembers()))
-                .collect(Collectors.toList());
+        // 소유한 그룹을 GroupDto로 변환하여 추가
+        for (MyGroup group : ownedGroups) {
+            GroupDto groupDto = new GroupDto(group.getId(), group.getName(), group.getOwner().getId(), group.getMembers(), group.getSharedCode());
+            groupDtos.add(groupDto);
+        }
+
+        // 멤버로 참여한 그룹을 GroupDto로 변환하여 추가
+        for (MyGroup group : memberGroups) {
+            // 이미 추가된 그룹은 중복으로 추가하지 않도록 확인
+            if (!ownedGroups.contains(group)) {
+                GroupDto groupDto = new GroupDto(group.getId(), group.getName(), group.getOwner().getId(), group.getMembers(), group.getSharedCode());
+                groupDtos.add(groupDto);
+            }
+        }
+
+        return groupDtos;
     }
 
 

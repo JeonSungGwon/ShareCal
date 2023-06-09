@@ -12,12 +12,14 @@ public class MemberDto {
     private String email;
     private String nickname;
     private Authority authority;
+    private String phoneNumber;
 
     @Builder
-    public MemberDto(Long id, String email, String nickname, Authority authority) {
+    public MemberDto(Long id, String email, String nickname, Authority authority, String phoneNumber) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
         this.authority = authority;
+        this.phoneNumber = phoneNumber;
     }
 }

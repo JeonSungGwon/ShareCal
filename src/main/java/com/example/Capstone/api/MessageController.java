@@ -45,11 +45,14 @@ public class MessageController {
         return ResponseEntity.ok(messages);
     }
 
-    @PostMapping("/accept")
-    public ResponseEntity<String> approveSharedSchedule(@RequestBody Long sharedScheduleId) {
+    @PostMapping("/accept/{id}")
+    public ResponseEntity<String> approveSharedSchedule(@PathVariable int id, @RequestBody Long sharedScheduleId) {
         SharedSchedule sharedSchedule = sharedScheduleRepository.findById(sharedScheduleId).orElse(null);
         sharedSchedule.setApproved(true);
         sharedScheduleRepository.save(sharedSchedule);
+        MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
+        Member receiver = memberRepository.findByNickname(myInfoBySecurity.getNickname());
+        messageService.deleteMessageByReceiver(id, receiver);
         return ResponseEntity.ok("Shared Schedule approved successfully");
     }
 

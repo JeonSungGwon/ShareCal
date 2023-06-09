@@ -17,17 +17,22 @@ public class GroupDto {
 
     private List<Long> memberIds;
     private List<MemberDto> members;
+    private Long ownerId;
+
+
+    private String sharedCode;
 
     @Builder
-    public GroupDto(Long id, String name, List<Member> members) {
+    public GroupDto(Long id, String name, Long ownerId, List<Member> members, String sharedCode) {
         this.id = id;
         this.name = name;
+        this.ownerId = ownerId;
         this.memberIds = members.stream()
                 .map(Member::getId)
                 .collect(Collectors.toList());
 
         this.members = members.stream()
-                .map(member -> new MemberDto(member.getId(), member.getEmail(), member.getNickname(), member.getAuthority()))
+                .map(member -> new MemberDto(member.getId(), member.getEmail(), member.getNickname(), member.getAuthority(),member.getPhoneNumber()))
                 .collect(Collectors.toList());
     }
 }

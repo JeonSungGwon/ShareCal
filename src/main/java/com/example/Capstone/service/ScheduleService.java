@@ -3,13 +3,8 @@ package com.example.Capstone.service;
 import com.example.Capstone.dto.MemberResponseDto;
 import com.example.Capstone.dto.MessageDto;
 import com.example.Capstone.dto.ScheduleDto;
-import com.example.Capstone.entity.Image;
-import com.example.Capstone.entity.Member;
-import com.example.Capstone.entity.Schedule;
-import com.example.Capstone.entity.SharedSchedule;
-import com.example.Capstone.repository.MemberRepository;
-import com.example.Capstone.repository.ScheduleRepository;
-import com.example.Capstone.repository.SharedScheduleRepository;
+import com.example.Capstone.entity.*;
+import com.example.Capstone.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,14 +35,18 @@ public class ScheduleService {
     private final MessageService messageService;
 
     private final SharedScheduleRepository sharedScheduleRepository;
+    private final ImageRepository imageRepository;
 
-    public ScheduleService(ScheduleRepository scheduleRepository, ModelMapper modelMapper, MemberRepository memberRepository,MemberService memberService, SharedScheduleRepository sharedScheduleRepository, MessageService messageService) {
+    public ScheduleService(ScheduleRepository scheduleRepository, ModelMapper modelMapper, MemberRepository memberRepository,
+                           MemberService memberService, SharedScheduleRepository sharedScheduleRepository, MessageService messageService,
+                           ImageRepository imageRepository) {
         this.scheduleRepository = scheduleRepository;
         this.modelMapper = modelMapper;
         this.memberRepository = memberRepository;
         this.memberService = memberService;
         this.sharedScheduleRepository = sharedScheduleRepository;
-        this.messageService=messageService;
+        this.messageService = messageService;
+        this.imageRepository = imageRepository;
     }
 
     public List<ScheduleDto> getAllSchedules() {
@@ -171,6 +170,12 @@ public class ScheduleService {
 
     @Transactional
     public void deleteSchedule(Long id) {
+        Schedule schedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid schedule ID: " + id));
+        List<Image> images = schedule.getImages(); // 예시: 스케줄과 이미지는 일대다 관계라고 가정
+        for (Image image : images) {
+            imageRepository.delete(image);
+        }
         scheduleRepository.deleteById(id);
     }
 

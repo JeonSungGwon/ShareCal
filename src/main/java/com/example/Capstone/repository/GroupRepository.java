@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface GroupRepository extends JpaRepository<MyGroup, Long> {
     Optional<MyGroup> findById(Long id);
+    MyGroup findBySharedCode(String sharedCode);
 }
