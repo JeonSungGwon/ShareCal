@@ -13,5 +13,5 @@ else
 fi
 
 cd /home/ubuntu/app
-sudo docker build -t image:v1.0 .
-sudo docker run -d -p 8080:8080 image:v1.0
+sudo docker build -t imagee:v1.0 .
+sudo docker run -d -p 8080:8080 imagee:v1.0
