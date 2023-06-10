@@ -38,7 +38,7 @@ public class GroupMessageController {
         this.groupService = groupService;
     }
 
-    @PostMapping("/group/accept")
+    @PostMapping("/group/accept") //그룹 참여 요청 메시지
     public ResponseEntity<String> acceptGroupRequest(@RequestParam String sharedCode) {
         MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
         Member member = memberRepository.findById(myInfoBySecurity.getId())
@@ -47,18 +47,23 @@ public class GroupMessageController {
         // 공유코드에 해당하는 그룹 검색
         MyGroup group = groupRepository.findBySharedCode(sharedCode);
 
+        if(group==null){
+            return ResponseEntity.badRequest().body("올바르지 않은 sharedCode");
+        }
+
         // 공유코드를 입력한 멤버가 그룹에 속해있는지 확인
         if (group.getMembers().contains(member)) {
             return ResponseEntity.badRequest().body("You are already a member of this group.");
         }
         Member groupOwner = group.getOwner();
+        Member sender = memberRepository.findById(myInfoBySecurity.getId()).orElse(null);
 
         // 오너에게 메시지 보내기
-        String message = "User with shared code " + sharedCode + " wants to join your group. Accept or decline?";
-        GroupMessage groupMessage = new GroupMessage(message, group, groupOwner);
+        String message = "참여 요청합니다" + group.getName();
+        GroupMessage groupMessage = new GroupMessage(message, group, groupOwner, sender);
         groupMessageRepository.save(groupMessage);
 
-        return ResponseEntity.ok("Group request sent to the owner for approval.");
+        return ResponseEntity.ok("그룹 가입 신청이 소유자에게 전송되었습니다.");
     }
     @GetMapping("/group/messages")
     public List<GroupMessageDto> getGroupMessages() {
@@ -68,12 +73,12 @@ public class GroupMessageController {
 
         List<GroupMessage> messages = groupMessageRepository.findByOwner(member);
         return messages.stream()
-                .map(message -> new GroupMessageDto(message.getId(), message.getMessage(), message.getGroup().getId(), message.getOwner().getId()))
+                .map(message -> new GroupMessageDto(message.getId(), message.getMessage(), message.getGroup().getId(), message.getSender().getEmail(), message.getSender().getNickname(), message.getOwner().getId(), message.getGroup().getSharedCode()))
                 .collect(Collectors.toList());
     }
 
 
-    @GetMapping("/accept/message")
+    @GetMapping("/accept/message")  // 메시지로 온 그룹 요청 승인
     public GroupDto acceptGroupRequest(@RequestParam String sharedCode, @RequestParam String email) {
         // 그룹 멤버를 추가하고 승인하는 로직 수행
         GroupDto groupDto = groupService.addMemberToGroup(sharedCode, email);

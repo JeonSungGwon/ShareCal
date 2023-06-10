@@ -1,4 +1,3 @@
-
 package com.example.Capstone.entity;
 
 import lombok.Getter;
@@ -27,9 +26,14 @@ public class GroupMessage {
     @JoinColumn(name = "owner_id")
     private Member owner;
 
-    public GroupMessage(String message, MyGroup group, Member owner) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id")
+    private Member sender;
+
+    public GroupMessage(String message, MyGroup group, Member owner, Member sender) {
         this.message = message;
         this.group = group;
         this.owner = owner;
+        this.sender = sender;
     }
 }
