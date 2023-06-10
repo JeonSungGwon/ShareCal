@@ -9,6 +9,7 @@ public class CommentDTO {
     private Long id;
     private String text;
     private Long scheduleId;
+    private String memberNickname;
     private Long memberId;
 
     // Constructors, getters, and setters

@@ -71,6 +71,7 @@ public class CommentService {
                 .map(comment -> {
                     CommentDTO commentDTO = modelMapper.map(comment, CommentDTO.class);
                     commentDTO.setMemberId(comment.getMember().getId()); // member의 memberId를 commentDTO에 설정
+                    commentDTO.setMemberNickname(comment.getMember().getNickname());
                     return commentDTO;
                 })
                 .collect(Collectors.toList());
