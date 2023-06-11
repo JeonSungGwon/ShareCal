@@ -23,6 +23,11 @@ public class ScheduleDto {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime endDateTime;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime alarmDateTime;
+
+    private boolean alarm;
+
     private List<ImageDto> images;
     private Long memberId;
 
@@ -39,20 +44,6 @@ public class ScheduleDto {
         this.content = content;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-    }
-
-
-    public static ScheduleDto from(Schedule schedule) {
-        ScheduleDto scheduleDto = new ScheduleDto();
-        scheduleDto.setId(schedule.getId());
-        scheduleDto.setTitle(schedule.getTitle());
-        scheduleDto.setContent(schedule.getContent());
-        scheduleDto.setStartDateTime(schedule.getStartDateTime());
-        scheduleDto.setEndDateTime(schedule.getEndDateTime());
-        if (schedule.getMember() != null) {
-            scheduleDto.setMemberId(schedule.getMember().getId());
-        }
-        return scheduleDto;
     }
 
 }

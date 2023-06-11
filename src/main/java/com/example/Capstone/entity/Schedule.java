@@ -33,6 +33,11 @@ public class Schedule {
     @Column(nullable = false)
     private LocalDateTime endDateTime;
 
+    @Column(nullable = false)
+    private boolean alarm;
+
+    private LocalDateTime alarmDateTime;
+
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 

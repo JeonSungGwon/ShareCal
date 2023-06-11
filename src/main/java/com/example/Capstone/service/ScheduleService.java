@@ -68,6 +68,13 @@ public class ScheduleService {
         MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
         scheduleDto.setMemberId(myInfoBySecurity.getId());
 
+        if (scheduleDto.isAlarm() && scheduleDto.getAlarmDateTime() == null) {
+            throw new IllegalArgumentException("알람이 True인데 시간 설정이 안되었습니다.");
+        }
+        if (!scheduleDto.isAlarm() && scheduleDto.getAlarmDateTime()!=null) {
+            throw new IllegalArgumentException("알람이 False인데 시간 설정이 되어있습니다.");
+        }
+
         Schedule schedule = modelMapper.map(scheduleDto, Schedule.class);
         Member member = memberRepository.findById(scheduleDto.getMemberId()).orElse(null);
         schedule.setMember(member);
@@ -80,6 +87,13 @@ public class ScheduleService {
     public ScheduleDto createSharedSchedule(ScheduleDto scheduleDto, List<String> sharedWithIds) {
         MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
         scheduleDto.setMemberId(myInfoBySecurity.getId());
+
+        if (scheduleDto.isAlarm() && scheduleDto.getAlarmDateTime() == null) {
+            throw new IllegalArgumentException("알람이 True인데 시간 설정이 안되었습니다.");
+        }
+        if (!scheduleDto.isAlarm() && scheduleDto.getAlarmDateTime()!=null) {
+            throw new IllegalArgumentException("알람이 False인데 시간 설정이 되어있습니다.");
+        }
 
         Schedule schedule = modelMapper.map(scheduleDto, Schedule.class);
         Member member = memberRepository.findById(scheduleDto.getMemberId()).orElse(null);
@@ -131,6 +145,17 @@ public class ScheduleService {
         }
         if(scheduleDto.getEndDateTime() != null) {
             schedule.setEndDateTime(scheduleDto.getEndDateTime());
+        }
+        if(scheduleDto.getEndDateTime() != null) {
+            schedule.setEndDateTime(scheduleDto.getEndDateTime());
+        }
+        if(scheduleDto.getAlarmDateTime() != null){
+            if(schedule.isAlarm()){
+                schedule.setAlarmDateTime(scheduleDto.getAlarmDateTime());
+            }
+        }
+        if(scheduleDto.isAlarm()!=schedule.isAlarm()){
+            schedule.setAlarm(scheduleDto.isAlarm());
         }
         if (image != null && !image.isEmpty()) {
             try {

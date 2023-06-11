@@ -47,6 +47,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Todo> Todos = new ArrayList<>();
     @OneToMany(mappedBy = "owner")
     private List<MyGroup> ownedGroups = new ArrayList<>();
 
