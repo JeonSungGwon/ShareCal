@@ -3,14 +3,13 @@ package com.example.Capstone.api;
 import com.example.Capstone.dto.GroupDto;
 import com.example.Capstone.dto.GroupMessageDto;
 import com.example.Capstone.dto.MemberResponseDto;
-import com.example.Capstone.entity.GroupMessage;
-import com.example.Capstone.entity.Member;
-import com.example.Capstone.entity.MyGroup;
+import com.example.Capstone.entity.*;
 import com.example.Capstone.repository.GroupMessageRepository;
 import com.example.Capstone.repository.GroupRepository;
 import com.example.Capstone.repository.MemberRepository;
 import com.example.Capstone.service.GroupService;
 import com.example.Capstone.service.MemberService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.ResponseEntity;
@@ -77,13 +76,22 @@ public class GroupMessageController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/accept/message")  // 메시지로 온 그룹 요청 승인
-    public GroupDto acceptGroupRequest(@RequestParam String sharedCode, @RequestParam String email) {
+    @GetMapping("/accept/message/{id}")  // 메시지로 온 그룹 요청 승인
+    public GroupDto acceptGroupRequest(@PathVariable Long id ,@RequestParam String sharedCode, @RequestParam String email) {
         // 그룹 멤버를 추가하고 승인하는 로직 수행
         GroupDto groupDto = groupService.addMemberToGroup(sharedCode, email);
 
+        GroupMessage groupMessage = groupMessageRepository.findById(id).orElse(null);
+        groupMessageRepository.delete(groupMessage);
         // 그룹 멤버 추가 후의 결과 반환
         return groupDto;
+    }
+
+    @DeleteMapping("/accept/message/{id}")
+    public ResponseEntity<String> disApproveGroupRequest(@PathVariable Long id){
+        GroupMessage groupMessage = groupMessageRepository.findById(id).orElse(null);
+        groupMessageRepository.delete(groupMessage);
+        return ResponseEntity.ok("Shared Schedule disapproved successfully");
     }
 
 
