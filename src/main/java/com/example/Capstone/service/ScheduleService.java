@@ -36,11 +36,13 @@ public class ScheduleService {
     private final MessageService messageService;
 
     private final SharedScheduleRepository sharedScheduleRepository;
+
+    private final CommentRepository commentRepository;
     private final ImageRepository imageRepository;
 
     public ScheduleService(ScheduleRepository scheduleRepository, ModelMapper modelMapper, MemberRepository memberRepository,
                            MemberService memberService, SharedScheduleRepository sharedScheduleRepository, MessageService messageService,
-                           ImageRepository imageRepository) {
+                           ImageRepository imageRepository, CommentRepository commentRepository) {
         this.scheduleRepository = scheduleRepository;
         this.modelMapper = modelMapper;
         this.memberRepository = memberRepository;
@@ -48,6 +50,7 @@ public class ScheduleService {
         this.sharedScheduleRepository = sharedScheduleRepository;
         this.messageService = messageService;
         this.imageRepository = imageRepository;
+        this.commentRepository = commentRepository;
     }
 
     public List<ScheduleDto> getAllSchedules() {
@@ -213,9 +216,12 @@ public class ScheduleService {
             for (Image image : images) {
                 imageRepository.delete(image);
             }
+            List<Comment> commentsRemove = commentRepository.findBySchedule(schedule);
+            for (Comment comment : commentsRemove) {
+                commentRepository.delete(comment);
+            }
             scheduleRepository.delete(schedule);
         }
-
     }
 
 }
