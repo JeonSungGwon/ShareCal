@@ -87,7 +87,7 @@ public class GroupScheduleService {
         }
 
         if(groupScheduleDto.getGroupId() != null) {
-            groupSchedule.setMyGroup(myGroup); //가두리양식
+            groupSchedule.setMyGroup(myGroup); //가두리양식.
         }
 
         if(groupScheduleDto.getAlarmDateTime() != null){
