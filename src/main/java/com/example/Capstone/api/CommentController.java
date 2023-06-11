@@ -36,6 +36,12 @@ public class CommentController {
         return ResponseEntity.ok(comments);
     }
 
+    @GetMapping("/groupSchedule/{groupScheduleId}")
+    public ResponseEntity<List<CommentDTO>> getCommentsByGroupSchedule(@PathVariable Long groupScheduleId) {
+        List<CommentDTO> comments = commentService.getCommentsByGroupSchedule(groupScheduleId);
+        return ResponseEntity.ok(comments);
+    }
+
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable Long commentId, @RequestBody CommentDTO commentDTO) {
         CommentDTO updatedComment = commentService.updateComment(commentId, commentDTO);

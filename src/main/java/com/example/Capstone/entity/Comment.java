@@ -25,6 +25,10 @@ public class Comment {
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_schedule_id")
+    private GroupSchedule groupSchedule;
+
     // Constructor, getters, and setters
 
     // Optional: Add a reference to the member who wrote the comment
