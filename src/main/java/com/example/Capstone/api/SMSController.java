@@ -30,7 +30,7 @@ public class SMSController {
         Message message = new Message();
         // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
         Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId()).orElse(null);
-        message.setFrom("01039028407");
+        message.setFrom(member.getPhoneNumber());
         message.setTo(member.getPhoneNumber());
         message.setText("알림 테스트입니다.");
 
