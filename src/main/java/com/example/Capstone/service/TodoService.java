@@ -60,6 +60,7 @@ public class TodoService {
         todoDTO.setId(todo.getId());
         todoDTO.setTitle(todo.getTitle());
         todoDTO.setCompleted(todo.isCompleted());
+        todoDTO.setDueDate(todo.getDueDate());
         todoDTO.setMemberId(todo.getId());
         todoDTO.setMemberNickname(todo.getMember().getNickname());
         return todoDTO;
@@ -69,6 +70,7 @@ public class TodoService {
         Todo todo = new Todo();
         todo.setTitle(todoDTO.getTitle());
         todo.setCompleted(todoDTO.isCompleted());
+        todo.setDueDate(todoDTO.getDueDate());
         return todo;
     }
 }

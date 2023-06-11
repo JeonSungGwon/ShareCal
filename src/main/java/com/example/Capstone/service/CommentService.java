@@ -42,7 +42,7 @@ public class CommentService {
         comment.setText(commentDTO.getText());
 
         if(commentDTO.getScheduleId()!=null) {
-            Schedule schedule = scheduleRepository.findById(commentDTO.getScheduleId())
+                Schedule schedule = scheduleRepository.findById(commentDTO.getScheduleId())
                     .orElseThrow(() -> new IllegalArgumentException("Invalid Schedule ID"));
 
             comment.setSchedule(schedule);
