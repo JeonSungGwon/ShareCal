@@ -3,9 +3,11 @@ package com.example.Capstone.service;
 import com.example.Capstone.config.SecurityUtil;
 import com.example.Capstone.dto.GroupDto;
 import com.example.Capstone.dto.MemberResponseDto;
+import com.example.Capstone.entity.GroupMessage;
 import com.example.Capstone.entity.GroupSchedule;
 import com.example.Capstone.entity.MyGroup;
 import com.example.Capstone.entity.Member;
+import com.example.Capstone.repository.GroupMessageRepository;
 import com.example.Capstone.repository.GroupRepository;
 import com.example.Capstone.repository.GroupScheduleRepository;
 import com.example.Capstone.repository.MemberRepository;
@@ -25,16 +27,21 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final MemberRepository memberRepository;
     private final GroupScheduleRepository groupScheduleRepository;
+    private final GroupScheduleService groupScheduleService;
+    private final GroupMessageRepository groupMessageRepository;
 
     private final MemberService memberService;
 
     public GroupService(GroupRepository groupRepository, MemberRepository memberRepository, ModelMapper modelMapper,
-                        MemberService memberService, GroupScheduleRepository groupScheduleRepository) {
+                        MemberService memberService, GroupScheduleRepository groupScheduleRepository,
+                        GroupScheduleService groupScheduleService, GroupMessageRepository groupMessageRepository) {
         this.groupRepository = groupRepository;
         this.memberRepository = memberRepository;
         this.modelMapper = modelMapper;
         this.memberService = memberService;
         this.groupScheduleRepository = groupScheduleRepository;
+        this.groupScheduleService = groupScheduleService;
+        this.groupMessageRepository = groupMessageRepository;
     }
 
     @Transactional
@@ -57,8 +64,13 @@ public class GroupService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group ID: " + groupId));
         List<GroupSchedule> schedulesToRemove = myGroup.getGroupSchedules(); // 예시: 그룹과 스케줄은 일대다 관계라고 가정
         for (GroupSchedule schedule : schedulesToRemove) {
-            groupScheduleRepository.delete(schedule);
+            groupScheduleService.deleteGroupSchedule(schedule.getId());
         }
+        List<GroupMessage> messagesToRemove = groupMessageRepository.findByGroup(myGroup);
+        for (GroupMessage message : messagesToRemove) {
+            groupMessageRepository.delete(message);
+        }
+
         groupRepository.delete(myGroup);
     }
 
