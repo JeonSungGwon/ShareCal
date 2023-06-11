@@ -56,6 +56,15 @@ public class MessageController {
         return ResponseEntity.ok("Shared Schedule approved successfully");
     }
 
+    @PostMapping("/reject/{id}")
+    public ResponseEntity<String> disApproveSharedSchedule(@PathVariable Long id, @RequestBody Long sharedScheduleId){
+        SharedSchedule sharedSchedule = sharedScheduleRepository.findById(sharedScheduleId).orElse(null);
+        sharedScheduleRepository.delete(sharedSchedule);
+        messageService.deleteMessageByReceiver(id);
+        return ResponseEntity.ok("Shared Schedule disapproved successfully");
+    }
+
+
 
     @DeleteMapping("/received/{id}")
     @ApiOperation(value = "Delete a received message")

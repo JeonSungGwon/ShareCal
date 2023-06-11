@@ -77,7 +77,6 @@ public class GroupMessageController {
                 .collect(Collectors.toList());
     }
 
-
     @GetMapping("/accept/message")  // 메시지로 온 그룹 요청 승인
     public GroupDto acceptGroupRequest(@RequestParam String sharedCode, @RequestParam String email) {
         // 그룹 멤버를 추가하고 승인하는 로직 수행
