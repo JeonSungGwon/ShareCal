@@ -87,7 +87,7 @@ public class GroupMessageController {
         return groupDto;
     }
 
-    @DeleteMapping("/accept/message/{id}")
+    @DeleteMapping("/reject/message/{id}")
     public ResponseEntity<String> disApproveGroupRequest(@PathVariable Long id){
         GroupMessage groupMessage = groupMessageRepository.findById(id).orElse(null);
         groupMessageRepository.delete(groupMessage);
