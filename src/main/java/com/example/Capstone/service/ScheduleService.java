@@ -6,12 +6,14 @@ import com.example.Capstone.dto.MessageDto;
 import com.example.Capstone.dto.ScheduleDto;
 import com.example.Capstone.entity.*;
 import com.example.Capstone.repository.*;
+import lombok.extern.slf4j.Slf4j;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +30,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
-
+@Slf4j
 @Transactional(readOnly = false)
 public class ScheduleService {
 
@@ -234,12 +236,13 @@ public class ScheduleService {
     @Scheduled(cron = "0 * * * * *")// 1분마다 실행
     public void SendOne() {
         LocalDateTime currentDateTime = LocalDateTime.now();
-
+        log.info("Current DateTime: {}", currentDateTime);
         // alarmDateTime과 현재 시간 비교
         List<Schedule> schedules = scheduleRepository.findByAlarmDateTimeBefore(currentDateTime);
 
         for (Schedule schedule : schedules) {
             if (schedule.isAlarm()) {
+                log.info("잘 들어옴 {}", schedule.getTitle());
                 net.nurigo.sdk.message.model.Message message = new Message();
                 // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
                 Member member = schedule.getMember();
