@@ -6,8 +6,13 @@ import com.example.Capstone.dto.MessageDto;
 import com.example.Capstone.dto.ScheduleDto;
 import com.example.Capstone.entity.*;
 import com.example.Capstone.repository.*;
+import net.nurigo.sdk.NurigoApp;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
+import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,12 +38,13 @@ public class ScheduleService {
     private final MemberRepository memberRepository;
     private final MemberService memberService;
 
-    private final MessageService messageService;
+    private final MessageService messageServices;
 
     private final SharedScheduleRepository sharedScheduleRepository;
 
     private final CommentRepository commentRepository;
     private final ImageRepository imageRepository;
+    final DefaultMessageService messageService;
 
     public ScheduleService(ScheduleRepository scheduleRepository, ModelMapper modelMapper, MemberRepository memberRepository,
                            MemberService memberService, SharedScheduleRepository sharedScheduleRepository, MessageService messageService,
@@ -48,9 +54,10 @@ public class ScheduleService {
         this.memberRepository = memberRepository;
         this.memberService = memberService;
         this.sharedScheduleRepository = sharedScheduleRepository;
-        this.messageService = messageService;
+        this.messageServices = messageService;
         this.imageRepository = imageRepository;
         this.commentRepository = commentRepository;
+        this.messageService = NurigoApp.INSTANCE.initialize("NCS1INCLK8BWN4SQ", "WQSKVMRU51E2HUOQRVAVQQE2ZXGDVLW5", "https://api.coolsms.co.kr");
     }
 
     public List<ScheduleDto> getAllSchedules() {
@@ -122,7 +129,7 @@ public class ScheduleService {
             messageDto.setTitle(messageTitle);
             messageDto.setContent(messageContent);
             messageDto.setSharedScheduleId(sharedSchedule.getId()); // 공유 스케줄 아이디값 설정
-            messageService.write(messageDto); // 메시지 전송
+            messageServices.write(messageDto); // 메시지 전송
 
             return sharedSchedule;
         }).collect(Collectors.toList());
@@ -221,6 +228,28 @@ public class ScheduleService {
                 commentRepository.delete(comment);
             }
             scheduleRepository.delete(schedule);
+        }
+    }
+
+    @Scheduled(cron = "0 * * * * *")// 1분마다 실행
+    public void SendOne() {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // alarmDateTime과 현재 시간 비교
+        List<Schedule> schedules = scheduleRepository.findByAlarmDateTimeBefore(currentDateTime);
+
+        for (Schedule schedule : schedules) {
+            if (schedule.isAlarm()) {
+                net.nurigo.sdk.message.model.Message message = new Message();
+                // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
+                Member member = schedule.getMember();
+                message.setFrom(member.getPhoneNumber());
+                message.setTo(member.getPhoneNumber());
+                message.setText("금일은 " + schedule.getTitle() + " 일정이 있는 날입니다.");
+                this.messageService.sendOne(new SingleMessageSendingRequest(message));
+                schedule.setAlarm(false);
+                scheduleRepository.save(schedule);
+            }
         }
     }
 

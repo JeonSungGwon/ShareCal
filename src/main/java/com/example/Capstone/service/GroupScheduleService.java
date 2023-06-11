@@ -1,18 +1,23 @@
 package com.example.Capstone.service;
 
+import com.example.Capstone.config.SecurityUtil;
 import com.example.Capstone.dto.GroupScheduleDto;
 import com.example.Capstone.dto.MemberResponseDto;
 import com.example.Capstone.dto.ScheduleDto;
-import com.example.Capstone.entity.GroupSchedule;
-import com.example.Capstone.entity.Image;
-import com.example.Capstone.entity.MyGroup;
-import com.example.Capstone.entity.Schedule;
+import com.example.Capstone.entity.*;
 import com.example.Capstone.repository.GroupRepository;
 import com.example.Capstone.repository.GroupScheduleRepository;
 import com.example.Capstone.repository.ImageRepository;
+import net.nurigo.sdk.NurigoApp;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
+import net.nurigo.sdk.message.response.SingleMessageSentResponse;
+import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.modelmapper.ModelMapper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,14 +36,16 @@ public class GroupScheduleService {
     private final ModelMapper modelMapper;
     private final ImageRepository imageRepository;
     private final MemberService memberService;
+    final DefaultMessageService messageService;
 
     public GroupScheduleService(GroupScheduleRepository groupScheduleRepository, GroupRepository groupRepository, ModelMapper modelMapper,
-                                MemberService memberService,ImageRepository imageRepository) {
+                                MemberService memberService, ImageRepository imageRepository) {
         this.groupScheduleRepository = groupScheduleRepository;
         this.groupRepository = groupRepository;
         this.modelMapper = modelMapper;
         this.memberService = memberService;
         this.imageRepository = imageRepository;
+        this.messageService = NurigoApp.INSTANCE.initialize("NCS1INCLK8BWN4SQ", "WQSKVMRU51E2HUOQRVAVQQE2ZXGDVLW5", "https://api.coolsms.co.kr");
     }
 
     @Transactional
@@ -68,34 +75,34 @@ public class GroupScheduleService {
 
 
     @Transactional
-    public GroupScheduleDto updateGroupSchedule(Long groupScheduleId,Long groupId, GroupScheduleDto groupScheduleDto, @RequestParam MultipartFile image) {
+    public GroupScheduleDto updateGroupSchedule(Long groupScheduleId, Long groupId, GroupScheduleDto groupScheduleDto, @RequestParam MultipartFile image) {
         GroupSchedule groupSchedule = groupScheduleRepository.findById(groupScheduleId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group schedule ID: " + groupScheduleId));
         MyGroup myGroup = groupRepository.findById(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group ID: " + groupScheduleDto.getGroupId()));
-        if(groupScheduleDto.getTitle() != null && !groupScheduleDto.getTitle().isEmpty()) {
+        if (groupScheduleDto.getTitle() != null && !groupScheduleDto.getTitle().isEmpty()) {
             groupSchedule.setTitle(groupScheduleDto.getTitle());
         }
-        if(groupScheduleDto.getContent() != null && !groupScheduleDto.getContent().isEmpty()) {
+        if (groupScheduleDto.getContent() != null && !groupScheduleDto.getContent().isEmpty()) {
             groupSchedule.setContent(groupScheduleDto.getContent());
         }
-        if(groupScheduleDto.getStartDateTime() != null) {
+        if (groupScheduleDto.getStartDateTime() != null) {
             groupSchedule.setStartDateTime(groupScheduleDto.getStartDateTime());
         }
-        if(groupScheduleDto.getEndDateTime() != null) {
+        if (groupScheduleDto.getEndDateTime() != null) {
             groupSchedule.setEndDateTime(groupScheduleDto.getEndDateTime());
         }
 
-        if(groupScheduleDto.getGroupId() != null) {
+        if (groupScheduleDto.getGroupId() != null) {
             groupSchedule.setMyGroup(myGroup); //가두리양식.
         }
 
-        if(groupScheduleDto.getAlarmDateTime() != null){
-            if(groupSchedule.isAlarm()){
+        if (groupScheduleDto.getAlarmDateTime() != null) {
+            if (groupSchedule.isAlarm()) {
                 groupSchedule.setAlarmDateTime(groupScheduleDto.getAlarmDateTime());
             }
         }
-        if(groupScheduleDto.isAlarm()!=groupSchedule.isAlarm()){
+        if (groupScheduleDto.isAlarm() != groupSchedule.isAlarm()) {
             groupSchedule.setAlarm(groupScheduleDto.isAlarm());
         }
         if (image != null && !image.isEmpty()) {
@@ -106,8 +113,7 @@ public class GroupScheduleService {
                 newImage.setCreatedAt(LocalDateTime.now());
                 newImage.setGroupSchedule(groupSchedule);
                 groupSchedule.getImages().add(newImage);
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 throw new RuntimeException("Failed to read image file", e);
             }
         }
@@ -142,6 +148,7 @@ public class GroupScheduleService {
 
         return groupScheduleDtos;
     }
+
     private GroupScheduleDto convertEntityToDto(GroupSchedule groupSchedule) {
         GroupScheduleDto groupScheduleDto = new GroupScheduleDto();
         groupScheduleDto.setId(groupSchedule.getId());
@@ -152,5 +159,27 @@ public class GroupScheduleService {
         groupScheduleDto.setAlarmDateTime(groupSchedule.getAlarmDateTime());
         groupScheduleDto.setAlarm(groupSchedule.isAlarm());
         return groupScheduleDto;
+    }
+
+    @Scheduled(cron = "0 * * * * *")// 1분마다 실행
+    public void groupSendOne() {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // alarmDateTime과 현재 시간 비교
+        List<GroupSchedule> groupSchedules = groupScheduleRepository.findByAlarmDateTimeBefore(currentDateTime);
+
+        for (GroupSchedule groupSchedule : groupSchedules) {
+            if (groupSchedule.isAlarm()) {
+                Message message = new Message();
+                // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
+                Member member = groupSchedule.getMyGroup().getOwner();
+                message.setFrom(member.getPhoneNumber());
+                message.setTo(member.getPhoneNumber());
+                message.setText("금일은 " + groupSchedule.getTitle() + " 일정이 있는 날입니다.");
+                this.messageService.sendOne(new SingleMessageSendingRequest(message));
+                groupSchedule.setAlarm(false);
+                groupScheduleRepository.save(groupSchedule);
+            }
+        }
     }
 }
