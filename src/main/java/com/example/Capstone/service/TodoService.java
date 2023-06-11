@@ -23,7 +23,7 @@ public class TodoService {
 
     public List<TodoDTO> getAllTodos() {
         Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId()).orElse(null);
-        List<Todo> todos = todoRepository.findByMembers(member);
+        List<Todo> todos = todoRepository.findByMember(member);
         return todos.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());

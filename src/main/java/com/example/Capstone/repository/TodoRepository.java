@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface TodoRepository extends JpaRepository<Todo, Long> {
-    List<Todo> findByMembers(Member member);
-    Todo findByMember(Member member);
+    List<Todo> findByMember(Member member);
+
 }
