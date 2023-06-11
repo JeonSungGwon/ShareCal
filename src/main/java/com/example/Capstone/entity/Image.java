@@ -23,6 +23,10 @@ public class Image {
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_schedule_id")
+    private GroupSchedule groupSchedule;
+
     @Lob
     private byte[] imageData;
 

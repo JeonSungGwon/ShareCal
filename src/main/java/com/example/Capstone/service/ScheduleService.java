@@ -146,9 +146,6 @@ public class ScheduleService {
         if(scheduleDto.getEndDateTime() != null) {
             schedule.setEndDateTime(scheduleDto.getEndDateTime());
         }
-        if(scheduleDto.getEndDateTime() != null) {
-            schedule.setEndDateTime(scheduleDto.getEndDateTime());
-        }
         if(scheduleDto.getAlarmDateTime() != null){
             if(schedule.isAlarm()){
                 schedule.setAlarmDateTime(scheduleDto.getAlarmDateTime());

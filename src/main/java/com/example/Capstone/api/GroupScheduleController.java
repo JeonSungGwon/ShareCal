@@ -4,6 +4,7 @@ import com.example.Capstone.dto.GroupScheduleDto;
 import com.example.Capstone.service.GroupScheduleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,8 +26,8 @@ public class GroupScheduleController {
     }
 
     @PatchMapping("/{groupScheduleId}")
-    public GroupScheduleDto updateGroupSchedule(@PathVariable Long groupScheduleId, @PathVariable Long groupId, @RequestBody GroupScheduleDto groupScheduleDto) {
-        return groupScheduleService.updateGroupSchedule(groupScheduleId, groupId, groupScheduleDto);
+    public GroupScheduleDto updateGroupSchedule(@PathVariable Long groupScheduleId, @PathVariable Long groupId, @RequestBody GroupScheduleDto groupScheduleDto, @RequestParam(required = false) MultipartFile image) {
+        return groupScheduleService.updateGroupSchedule(groupScheduleId, groupId, groupScheduleDto, image);
     }
 
     @DeleteMapping("/{groupScheduleId}")
