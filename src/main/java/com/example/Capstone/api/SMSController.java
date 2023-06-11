@@ -1,6 +1,8 @@
 package com.example.Capstone.api;
 
 import com.example.Capstone.config.SecurityUtil;
+import com.example.Capstone.dto.GroupScheduleDto;
+import com.example.Capstone.dto.ScheduleDto;
 import com.example.Capstone.entity.Member;
 import com.example.Capstone.repository.MemberRepository;
 import net.nurigo.sdk.NurigoApp;
@@ -26,13 +28,28 @@ public class SMSController {
     }
 
     @PostMapping("/send-one")
-    public SingleMessageSentResponse sendOne() {
+    public SingleMessageSentResponse sendOne(@RequestBody String scheduleTitle) {
         Message message = new Message();
         // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
         Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId()).orElse(null);
         message.setFrom(member.getPhoneNumber());
         message.setTo(member.getPhoneNumber());
-        message.setText("알림 테스트입니다.");
+        message.setText("금일은 "+scheduleTitle+" 일정이 있는 날입니다.");
+
+        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+        System.out.println(response);
+
+        return response;
+    }
+
+    @PostMapping("/group/send-one")
+    public SingleMessageSentResponse groupSendOne(@RequestBody GroupScheduleDto groupScheduleDto) {
+        Message message = new Message();
+        // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
+        Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId()).orElse(null);
+        message.setFrom(member.getPhoneNumber());
+        message.setTo(member.getPhoneNumber());
+        message.setText("금일은 "+groupScheduleDto.getTitle()+" 일정이 있는 날입니다.");
 
         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
         System.out.println(response);
@@ -40,3 +57,4 @@ public class SMSController {
         return response;
     }
 }
+
