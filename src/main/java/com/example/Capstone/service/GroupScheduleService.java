@@ -170,6 +170,7 @@ public class GroupScheduleService {
     }
 
     @Scheduled(cron = "0 * * * * *")// 1분마다 실행
+    @Transactional
     public void groupSendOne() {
         LocalDateTime currentDateTime = LocalDateTime.now();
         LocalDateTime modifiedDateTime = currentDateTime.plusHours(9);
