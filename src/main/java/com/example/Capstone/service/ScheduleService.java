@@ -234,6 +234,7 @@ public class ScheduleService {
     }
 
     @Scheduled(cron = "0 * * * * *")// 1분마다 실행
+    @Transactional
     public void SendOne() {
         LocalDateTime currentDateTime = LocalDateTime.now();
         LocalDateTime modifiedDateTime = currentDateTime.plusHours(9);

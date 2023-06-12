@@ -180,23 +180,16 @@ public class GroupScheduleService {
 
         for (GroupSchedule groupSchedule : groupSchedules) {
             if (groupSchedule.isAlarm()) { // true면 들어온다.
-                //Message message = new Message();
+                Message message = new Message();
                 // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
-                //Member member = groupSchedule.getMyGroup().getOwner();
-               // message.setFrom("01033378486");
-                //message.setTo(member.getPhoneNumber());
-                //message.setText("금일은 " + groupSchedule.getTitle() + " 일정이 있는 날이오.");
-                //this.messageService.sendOne(new SingleMessageSendingRequest(message));
+                Member member = groupSchedule.getMyGroup().getOwner();
+                message.setFrom("01033378486");
+                message.setTo(member.getPhoneNumber());
+                message.setText("금일은 " + groupSchedule.getTitle() + " 일정이 있는 날입니다.");
+                this.messageService.sendOne(new SingleMessageSendingRequest(message));
                 groupSchedule.setAlarm(false);
-                log.info("왜 안되는거냐고         "+groupSchedule.isAlarm());//
-                GroupSchedule updatedGroupSchedule = groupScheduleRepository.save(groupSchedule);  //<--
+                groupScheduleRepository.save(groupSchedule);
 
-                // 변경 내용을 DB에서 확인하기 위해 엔티티를 다시 조회
-                GroupSchedule refreshedGroupSchedule = groupScheduleRepository.findById(groupSchedule.getId())
-                        .orElseThrow(() -> new NoSuchElementException("Group schedule not found"));
-
-                System.out.println("이거다1111111111111              "  +updatedGroupSchedule.getTitle());
-                System.out.println("이거다22222222222222: " + refreshedGroupSchedule.isAlarm());
             }
         }
     }
