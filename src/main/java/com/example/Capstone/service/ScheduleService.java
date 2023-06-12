@@ -236,9 +236,10 @@ public class ScheduleService {
     @Scheduled(cron = "0 * * * * *")// 1분마다 실행
     public void SendOne() {
         LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime modifiedDateTime = currentDateTime.plusHours(9);
         log.info("Current DateTime: {}", currentDateTime);
         // alarmDateTime과 현재 시간 비교
-        List<Schedule> schedules = scheduleRepository.findByAlarmDateTimeBefore(currentDateTime);
+        List<Schedule> schedules = scheduleRepository.findByAlarmDateTimeBefore(modifiedDateTime);
 
         for (Schedule schedule : schedules) {
             if (schedule.isAlarm()) {

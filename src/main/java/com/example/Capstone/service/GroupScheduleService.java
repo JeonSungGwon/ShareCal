@@ -164,9 +164,10 @@ public class GroupScheduleService {
     @Scheduled(cron = "0 * * * * *")// 1분마다 실행
     public void groupSendOne() {
         LocalDateTime currentDateTime = LocalDateTime.now();
-
+        LocalDateTime modifiedDateTime = currentDateTime.plusHours(9);
         // alarmDateTime과 현재 시간 비교
-        List<GroupSchedule> groupSchedules = groupScheduleRepository.findByAlarmDateTimeBefore(currentDateTime);
+        List<GroupSchedule> groupSchedules = groupScheduleRepository.findByAlarmDateTimeBefore(modifiedDateTime);
+
 
         for (GroupSchedule groupSchedule : groupSchedules) {
             if (groupSchedule.isAlarm()) {
