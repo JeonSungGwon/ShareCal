@@ -119,6 +119,7 @@ public class GroupScheduleService {
                 throw new RuntimeException("Failed to read image file", e);
             }
         }
+        log.info("말이 안된다고라고라고락로가ㅏ라ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ");
         GroupSchedule upadtedGroupSchedule = groupScheduleRepository.save(groupSchedule);
         return modelMapper.map(upadtedGroupSchedule, GroupScheduleDto.class);
     }
@@ -181,8 +182,8 @@ public class GroupScheduleService {
                 message.setText("금일은 " + groupSchedule.getTitle() + " 일정이 있는 날이오.");
                 this.messageService.sendOne(new SingleMessageSendingRequest(message));
                 groupSchedule.setAlarm(false);
-                log.info("왜 안되는거냐고         "+groupSchedule.isAlarm());   //-false가 찎혔는데
-                GroupSchedule updatedGroupSchedule = groupScheduleRepository.save(groupSchedule);  //<--db에 왜 true로 되어있음?
+                log.info("왜 안되는거냐고         "+groupSchedule.isAlarm());   //-false가 찎혔는데  -<< 이거 맞음 false가 찎혀야됨
+                GroupSchedule updatedGroupSchedule = groupScheduleRepository.save(groupSchedule);  //<--
                 System.out.println("이거다                      "  +updatedGroupSchedule.isAlarm());
             }
         }
