@@ -187,7 +187,7 @@ public class GroupScheduleService {
                 //message.setText("금일은 " + groupSchedule.getTitle() + " 일정이 있는 날이오.");
                 //this.messageService.sendOne(new SingleMessageSendingRequest(message));
                 groupSchedule.setAlarm(false);
-                log.info("왜 안되는거냐고         "+groupSchedule.isAlarm());
+                log.info("왜 안되는거냐고         "+groupSchedule.isAlarm());//
                 GroupSchedule updatedGroupSchedule = groupScheduleRepository.save(groupSchedule);  //<--
 
                 // 변경 내용을 DB에서 확인하기 위해 엔티티를 다시 조회
