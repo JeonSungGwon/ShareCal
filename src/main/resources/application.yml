@@ -8,12 +8,12 @@ spring:
     defer-datasource-initialization: 'true'
     hibernate:
       ddl-auto: update
-      # 고쳐봤습니다..........................................링링리이리이리일ㅇ
   datasource:
     password: wjstjd741
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     url: jdbc:mysql://db-capstone1.cyrxqjtjnjs7.ap-northeast-2.rds.amazonaws.com:3306/Schedule?guseUnicode=true&characterEncoding=UTF-8
+    #url: jdbc:mysql://localhost:3306/firstproject_db?guseUnicode=true&characterEncoding=UTF-8
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
