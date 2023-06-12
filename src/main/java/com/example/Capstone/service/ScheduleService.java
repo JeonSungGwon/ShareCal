@@ -247,7 +247,7 @@ public class ScheduleService {
                 net.nurigo.sdk.message.model.Message message = new Message();
                 // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
                 Member member = schedule.getMember();
-                message.setFrom(member.getPhoneNumber());
+                message.setFrom("01039028407");
                 message.setTo(member.getPhoneNumber());
                 message.setText("금일은 " + schedule.getTitle() + " 일정이 있는 날입니다.");
                 this.messageService.sendOne(new SingleMessageSendingRequest(message));
