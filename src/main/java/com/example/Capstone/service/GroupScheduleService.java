@@ -61,6 +61,7 @@ public class GroupScheduleService {
         if (!groupScheduleDto.isAlarm() && groupScheduleDto.getAlarmDateTime() != null) {
             throw new IllegalArgumentException("알람이 False인데 시간 설정이 되어있습니다.");
         }
+        log.info("말이 안된다고라고라고락로가ㅏ라ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ");
 
         GroupSchedule groupSchedule = GroupSchedule.builder()
                 .title(groupScheduleDto.getTitle())
