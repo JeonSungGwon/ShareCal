@@ -176,7 +176,7 @@ public class GroupScheduleService {
                 Member member = groupSchedule.getMyGroup().getOwner();
                 message.setFrom("01039028407");
                 message.setTo(member.getPhoneNumber());
-                message.setText("금일은 " + groupSchedule.getTitle() + " 일정이 있는 날입니다.");
+                message.setText("금일은 " + groupSchedule.getTitle() + " 일정이 있는 날이오.");
                 this.messageService.sendOne(new SingleMessageSendingRequest(message));
                 groupSchedule.setAlarm(false);
                 groupScheduleRepository.save(groupSchedule);
