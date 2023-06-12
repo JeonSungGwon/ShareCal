@@ -182,7 +182,8 @@ public class GroupScheduleService {
                 this.messageService.sendOne(new SingleMessageSendingRequest(message));
                 groupSchedule.setAlarm(false);
                 log.info("왜 안되는거냐고         "+groupSchedule.isAlarm());   //-false가 찎혔는데
-                groupScheduleRepository.save(groupSchedule);  //<--db에 왜 true로 되어있음?
+                GroupSchedule updatedGroupSchedule = groupScheduleRepository.save(groupSchedule);  //<--db에 왜 true로 되어있음?
+                System.out.println(updatedGroupSchedule);
             }
         }
     }
