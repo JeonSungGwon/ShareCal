@@ -47,7 +47,7 @@ public class GroupScheduleService {
         this.modelMapper = modelMapper;
         this.memberService = memberService;
         this.imageRepository = imageRepository;
-        this.messageService = NurigoApp.INSTANCE.initialize("NCS1INCLK8BWN4SQ", "WQSKVMRU51E2HUOQRVAVQQE2ZXGDVLW5", "https://api.coolsms.co.kr");
+        this.messageService = NurigoApp.INSTANCE.initialize("NCSIK8AIEAUWTLBG", "YUQYOM9VHHRC0XMSRB7R6GKNTXZVPTKJ", "https://api.coolsms.co.kr");
     }
 
     @Transactional
@@ -176,13 +176,13 @@ public class GroupScheduleService {
                 Message message = new Message();
                 // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
                 Member member = groupSchedule.getMyGroup().getOwner();
-                message.setFrom("01039028407");
+                message.setFrom("01033378486");
                 message.setTo(member.getPhoneNumber());
                 message.setText("금일은 " + groupSchedule.getTitle() + " 일정이 있는 날이오.");
                 this.messageService.sendOne(new SingleMessageSendingRequest(message));
                 groupSchedule.setAlarm(false);
-                log.info("왜 안되는거냐고         "+groupSchedule.isAlarm());
-                groupScheduleRepository.save(groupSchedule);
+                log.info("왜 안되는거냐고         "+groupSchedule.isAlarm());   //-false가 찎혔는데
+                groupScheduleRepository.save(groupSchedule);  //<--db에 왜 true로 되어있음?
             }
         }
     }
