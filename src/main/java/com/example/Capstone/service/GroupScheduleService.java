@@ -8,6 +8,7 @@ import com.example.Capstone.entity.*;
 import com.example.Capstone.repository.GroupRepository;
 import com.example.Capstone.repository.GroupScheduleRepository;
 import com.example.Capstone.repository.ImageRepository;
+import lombok.extern.slf4j.Slf4j;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
@@ -29,6 +30,7 @@ import java.util.NoSuchElementException;
 
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class GroupScheduleService {
 
     private final GroupScheduleRepository groupScheduleRepository;
@@ -170,7 +172,7 @@ public class GroupScheduleService {
 
 
         for (GroupSchedule groupSchedule : groupSchedules) {
-            if (groupSchedule.isAlarm()) {
+            if (groupSchedule.isAlarm()) { // true면 들어온다.
                 Message message = new Message();
                 // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
                 Member member = groupSchedule.getMyGroup().getOwner();
@@ -179,6 +181,7 @@ public class GroupScheduleService {
                 message.setText("금일은 " + groupSchedule.getTitle() + " 일정이 있는 날이오.");
                 this.messageService.sendOne(new SingleMessageSendingRequest(message));
                 groupSchedule.setAlarm(false);
+                log.info("왜 안되는거냐고         "+groupSchedule.isAlarm());
                 groupScheduleRepository.save(groupSchedule);
             }
         }
