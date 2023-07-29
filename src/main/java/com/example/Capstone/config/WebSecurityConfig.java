@@ -26,7 +26,7 @@ import java.util.List;
 @Component
 public class WebSecurityConfig {
 
-    // TokenProvider 객체
+    // TokenProvider 객체 hjhjj
     private final TokenProvider tokenProvider;
     // JWT 인증 진입점
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
