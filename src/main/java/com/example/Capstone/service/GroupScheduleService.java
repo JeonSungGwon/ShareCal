@@ -3,6 +3,7 @@ package com.example.Capstone.service;
 import com.example.Capstone.dto.GroupScheduleDto;
 import com.example.Capstone.dto.MemberResponseDto;
 import com.example.Capstone.entity.*;
+import com.example.Capstone.repository.CommentRepository;
 import com.example.Capstone.repository.GroupRepository;
 import com.example.Capstone.repository.GroupScheduleRepository;
 import com.example.Capstone.repository.ImageRepository;
@@ -33,19 +34,22 @@ public class GroupScheduleService {
     private final GroupRepository groupRepository;
     private final ModelMapper modelMapper;
     private final ImageRepository imageRepository;
+    private final CommentRepository commentRepository;
     private final MemberService memberService;
     final DefaultMessageService messageService;
     private final PlatformTransactionManager transactionManager;
 
 
     public GroupScheduleService(GroupScheduleRepository groupScheduleRepository, GroupRepository groupRepository, ModelMapper modelMapper,
-                                MemberService memberService, ImageRepository imageRepository, PlatformTransactionManager transactionManager) {
+                                MemberService memberService, ImageRepository imageRepository, PlatformTransactionManager transactionManager,
+                                CommentRepository commentRepository) {
         this.groupScheduleRepository = groupScheduleRepository;
         this.groupRepository = groupRepository;
         this.modelMapper = modelMapper;
         this.memberService = memberService;
         this.imageRepository = imageRepository;
         this.transactionManager = transactionManager;
+        this.commentRepository = commentRepository;
         this.messageService = NurigoApp.INSTANCE.initialize("NCSIK8AIEAUWTLBG", "YUQYOM9VHHRC0XMSRB7R6GKNTXZVPTKJ", "https://api.coolsms.co.kr");
     }
 
@@ -129,6 +133,11 @@ public class GroupScheduleService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group schedule ID: " + groupScheduleId));
 
         List<Image> images = groupSchedule.getImages();
+        List<Comment> comments = commentRepository.findByGroupSchedule(groupSchedule);
+
+        for (Comment comment : comments){
+            commentRepository.delete(comment);
+        }
         for (Image image : images) {
             imageRepository.delete(image);
         }
