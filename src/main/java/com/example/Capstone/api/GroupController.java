@@ -41,9 +41,7 @@ public class GroupController {
     @PostMapping("")
     public ResponseEntity<GroupDto> createGroup(@RequestBody GroupDto groupDto) {
         Long groupId = groupService.createGroup(groupDto);
-        System.out.println(groupId);
         GroupDto savedGroupDto = groupService.getGroup(groupId);
-        System.out.println(savedGroupDto.getId());
         return ResponseEntity.ok(savedGroupDto);
     }
 

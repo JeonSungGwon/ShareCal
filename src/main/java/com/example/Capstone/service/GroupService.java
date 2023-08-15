@@ -93,7 +93,11 @@ public class GroupService {
         if (memberGroups.size() == 1 && memberGroups.get(0).getMember().equals(owner)) {
             memberGroupRepository.delete(memberGroups.get(0)); // 마지막 멤버 삭제
             groupRepository.delete(myGroup); // 그룹 삭제
-        } else {
+        }
+        else if(memberGroups.size() == 0){
+            groupRepository.delete(myGroup);
+        }
+        else {
             throw new IllegalStateException("그룹에 member가 존재합니다.");
         }
     }
