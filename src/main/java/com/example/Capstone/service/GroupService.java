@@ -69,17 +69,35 @@ public class GroupService {
     public void deleteGroup(Long groupId) {
         MyGroup myGroup = groupRepository.findById(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group ID: " + groupId));
-        List<GroupSchedule> schedulesToRemove = myGroup.getGroupSchedules(); // 예시: 그룹과 스케줄은 일대다 관계라고 가정
+        List<GroupSchedule> schedulesToRemove = myGroup.getGroupSchedules();
+
+        MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
+        Member owner = memberRepository.findById(myInfoBySecurity.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+
+        if (!myGroup.getOwner().equals(owner)){
+            throw new IllegalStateException("Only the owner can approve group requests.");
+        }
+
         for (GroupSchedule schedule : schedulesToRemove) {
             groupScheduleService.deleteGroupSchedule(schedule.getId());
         }
+
         List<GroupMessage> messagesToRemove = groupMessageRepository.findByGroup(myGroup);
         for (GroupMessage message : messagesToRemove) {
             groupMessageRepository.delete(message);
         }
 
-        groupRepository.delete(myGroup);
+        // 마지막 멤버인 경우, 멤버를 삭제하고 그룹도 삭제합니다.
+        List<MemberGroup> memberGroups = myGroup.getMemberGroups();
+        if (memberGroups.size() == 1 && memberGroups.get(0).getMember().equals(owner)) {
+            memberGroupRepository.delete(memberGroups.get(0)); // 마지막 멤버 삭제
+            groupRepository.delete(myGroup); // 그룹 삭제
+        } else {
+            throw new IllegalStateException("그룹에 member가 존재합니다.");
+        }
     }
+
 
     @Transactional
     public GroupDto addMemberToGroup(String sharedCode, String email) {
@@ -116,7 +134,6 @@ public class GroupService {
     }
 
 
-
     @Transactional
     public void removeMemberFromGroup(Long groupId, Long memberId) {
         MyGroup myGroup = groupRepository.findById(groupId)
@@ -136,9 +153,9 @@ public class GroupService {
         }
 
         if (memberGroupToRemove != null) {
-            memberGroups.remove(memberGroupToRemove);
-            groupRepository.save(myGroup);
+            memberGroupRepository.delete(memberGroupToRemove); // 해당 MemberGroup 엔티티를 삭제
         }
+
     }
 
 
