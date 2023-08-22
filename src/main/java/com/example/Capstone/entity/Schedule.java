@@ -43,6 +43,15 @@ public class Schedule {
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
+    @PrePersist
+    @PreUpdate
+    private void setEndDateTimeFromStart() {
+        if (startDateTime != null && endDateTime == null) {
+            // Set endDateTime as startDateTime + 1 hour (for example)
+            endDateTime = startDateTime.plusHours(1); // You can change the duration as needed
+        }
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;

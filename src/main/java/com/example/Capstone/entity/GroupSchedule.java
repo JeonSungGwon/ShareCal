@@ -48,6 +48,15 @@ public class GroupSchedule {
     @JoinColumn(name = "group_id")
     private MyGroup myGroup;
 
+    @PrePersist
+    @PreUpdate
+    private void setEndDateTimeFromStart() {
+        if (startDateTime != null && endDateTime == null) {
+            // Set endDateTime as startDateTime + 1 hour (for example)
+            endDateTime = startDateTime.plusHours(1); // You can change the duration as needed
+        }
+    }
+
     @Builder
     public GroupSchedule(Long id, String title, String content, String backgroundColor, LocalDateTime startDateTime, LocalDateTime endDateTime, boolean alarm, LocalDateTime alarmDateTime, List<Image> images, MyGroup myGroup) {
         this.id = id;
