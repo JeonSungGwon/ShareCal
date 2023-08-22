@@ -33,6 +33,8 @@ public class Schedule {
     @Column(nullable = false)
     private LocalDateTime endDateTime;
 
+    private String backgroundColor;
+
     @Column(nullable = false)
     private boolean alarm;
 

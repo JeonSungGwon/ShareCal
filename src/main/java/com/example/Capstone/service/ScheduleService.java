@@ -186,6 +186,9 @@ public class ScheduleService {
         if(scheduleDto.getContent() != null && !scheduleDto.getContent().isEmpty()) {
             schedule.setContent(scheduleDto.getContent());
         }
+        if(scheduleDto.getBackgroundColor() != null && !scheduleDto.getBackgroundColor().isEmpty()){
+            schedule.setBackgroundColor(scheduleDto.getBackgroundColor());
+        }
         if(scheduleDto.getStartDateTime() != null) {
             schedule.setStartDateTime(scheduleDto.getStartDateTime());
         }

@@ -52,9 +52,6 @@ public class GroupMessageService {
 
     @Transactional(readOnly = true)
     public List<MessageDto> receivedMessage(Member member) {
-        // 받은 편지함 불러오기
-        // 한 명의 유저가 받은 모든 메시지
-        // 추후 JWT를 이용해서 재구현 예정
         List<Message> messages = messageRepository.findAllByReceiver(member);
         List<MessageDto> messageDtos = new ArrayList<>();
 

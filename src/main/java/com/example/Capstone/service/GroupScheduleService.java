@@ -68,6 +68,7 @@ public class GroupScheduleService {
         GroupSchedule groupSchedule = GroupSchedule.builder()
                 .title(groupScheduleDto.getTitle())
                 .content(groupScheduleDto.getContent())
+                .backgroundColor(groupScheduleDto.getBackgroundColor())
                 .startDateTime(groupScheduleDto.getStartDateTime())
                 .endDateTime(groupScheduleDto.getEndDateTime())
                 .alarm(groupScheduleDto.isAlarm())
@@ -90,6 +91,10 @@ public class GroupScheduleService {
         }
         if (groupScheduleDto.getContent() != null && !groupScheduleDto.getContent().isEmpty()) {
             groupSchedule.setContent(groupScheduleDto.getContent());
+        }
+
+        if (groupScheduleDto.getBackgroundColor() != null && !groupScheduleDto.getBackgroundColor().isEmpty()){
+            groupSchedule.setBackgroundColor(groupScheduleDto.getBackgroundColor());
         }
         if (groupScheduleDto.getStartDateTime() != null) {
             groupSchedule.setStartDateTime(groupScheduleDto.getStartDateTime());
@@ -135,11 +140,15 @@ public class GroupScheduleService {
         List<Image> images = groupSchedule.getImages();
         List<Comment> comments = commentRepository.findByGroupSchedule(groupSchedule);
 
-        for (Comment comment : comments){
-            commentRepository.delete(comment);
+        if (!comments.isEmpty()) {
+            for (Comment comment : comments) {
+                commentRepository.delete(comment);
+            }
         }
-        for (Image image : images) {
-            imageRepository.delete(image);
+        if (!images.isEmpty()) {
+            for (Image image : images) {
+                imageRepository.delete(image);
+            }
         }
         groupScheduleRepository.delete(groupSchedule);
     }
@@ -162,6 +171,7 @@ public class GroupScheduleService {
         GroupScheduleDto groupScheduleDto = new GroupScheduleDto();
         groupScheduleDto.setId(groupSchedule.getId());
         groupScheduleDto.setTitle(groupSchedule.getTitle());
+        groupScheduleDto.setBackgroundColor(groupScheduleDto.getBackgroundColor());
         groupScheduleDto.setStartDateTime(groupSchedule.getStartDateTime());
         groupScheduleDto.setEndDateTime(groupSchedule.getEndDateTime());
         groupScheduleDto.setGroupId(groupSchedule.getMyGroup().getId());

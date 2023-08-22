@@ -13,6 +13,7 @@ import com.example.Capstone.repository.GroupRepository;
 import com.example.Capstone.repository.MemberRepository;
 import com.example.Capstone.service.GroupService;
 import com.example.Capstone.service.MemberService;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/groups")
+@ApiOperation(value = "그룹 CRUD")
 public class GroupController {
 
     @Autowired

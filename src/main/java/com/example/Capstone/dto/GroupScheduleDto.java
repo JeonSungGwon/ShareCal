@@ -15,6 +15,7 @@ public class GroupScheduleDto {
     private Long id;
     private String title;
     private String content;
+    private String backgroundColor;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private LocalDateTime alarmDateTime;

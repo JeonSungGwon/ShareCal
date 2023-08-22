@@ -2,6 +2,7 @@ package com.example.Capstone.api;
 
 import com.example.Capstone.dto.GroupScheduleDto;
 import com.example.Capstone.service.GroupScheduleService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/groups/{groupId}/schedules")
+@ApiOperation(value = "그룹 스케줄")
 public class GroupScheduleController {
 
     private final GroupScheduleService groupScheduleService;

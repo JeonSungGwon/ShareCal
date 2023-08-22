@@ -14,6 +14,8 @@ public class ScheduleDto {
     private Long id;
     private String title;
     private String content;
+    private String backgroundColor;
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime startDateTime;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

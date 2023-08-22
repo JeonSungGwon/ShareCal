@@ -11,6 +11,7 @@ import com.example.Capstone.repository.MemberRepository;
 import com.example.Capstone.repository.SharedScheduleRepository;
 import com.example.Capstone.service.MemberService;
 import com.example.Capstone.service.ScheduleService;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/schedules")
+@ApiOperation(value = "개인 일정")
 public class ScheduleController {
 
     private final ScheduleService scheduleService;

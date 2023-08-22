@@ -9,6 +9,7 @@ import com.example.Capstone.repository.GroupRepository;
 import com.example.Capstone.repository.MemberRepository;
 import com.example.Capstone.service.GroupService;
 import com.example.Capstone.service.MemberService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@ApiOperation(value = "그룹 메세지 CRUD", notes = "그룹 참여 관련 요청 및 승인")
 public class GroupMessageController {
 
     private final MemberService memberService;

@@ -26,6 +26,9 @@ public class GroupSchedule {
     @Column(nullable = false)
     private String content;
 
+    private String backgroundColor;
+
+
     @Column(nullable = false)
     private LocalDateTime startDateTime;
 
@@ -46,10 +49,11 @@ public class GroupSchedule {
     private MyGroup myGroup;
 
     @Builder
-    public GroupSchedule(Long id, String title, String content, LocalDateTime startDateTime, LocalDateTime endDateTime, boolean alarm, LocalDateTime alarmDateTime, List<Image> images, MyGroup myGroup) {
+    public GroupSchedule(Long id, String title, String content, String backgroundColor, LocalDateTime startDateTime, LocalDateTime endDateTime, boolean alarm, LocalDateTime alarmDateTime, List<Image> images, MyGroup myGroup) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.backgroundColor = backgroundColor;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.alarm = alarm;

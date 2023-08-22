@@ -19,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/messages")
+@ApiOperation(value = "개인 메세지", notes = "단일 일정공유")
 @Api(tags = "Messages")
 @RequiredArgsConstructor
 public class MessageController {
