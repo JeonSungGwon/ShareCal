@@ -2,16 +2,14 @@ package com.example.Capstone.service;
 
 import com.example.Capstone.dto.MemberResponseDto;
 import com.example.Capstone.dto.MessageDto;
-import com.example.Capstone.entity.Member;
-import com.example.Capstone.entity.Message;
-import com.example.Capstone.entity.SharedSchedule;
-import com.example.Capstone.repository.MemberRepository;
-import com.example.Capstone.repository.MessageRepository;
-import com.example.Capstone.repository.SharedScheduleRepository;
+import com.example.Capstone.entity.*;
+import com.example.Capstone.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +19,8 @@ public class GroupMessageService {
     private final MessageRepository messageRepository;
     private final MemberRepository memberRepository;
     private final SharedScheduleRepository sharedScheduleRepository;
+    private final GroupRepository groupRepository;
+    private final GroupMessageRepository groupMessageRepository;
 
     private final MemberService memberService;
 
@@ -123,6 +123,31 @@ public class GroupMessageService {
             return new IllegalArgumentException("유저 정보가 일치하지 않습니다.");
         }
 
+    }
+    public ResponseEntity<String> acceptGroupRequest(String sharedCode){
+        MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
+        Member member = memberRepository.findById(myInfoBySecurity.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
 
+        // 공유코드에 해당하는 그룹 검색
+        MyGroup group = groupRepository.findBySharedCode(sharedCode);
+
+        if(group==null){
+            return ResponseEntity.badRequest().body("올바르지 않은 sharedCode");
+        }
+
+        // 공유코드를 입력한 멤버가 그룹에 속해있는지 확인
+        if (group.getMemberGroups().contains(member)) {
+            return ResponseEntity.badRequest().body("You are already a member of this group.");
+        }
+        Member groupOwner = group.getOwner();
+        Member sender = memberRepository.findById(myInfoBySecurity.getId()).orElse(null);
+
+        // 오너에게 메시지 보내기
+        String message = "참여 요청합니다" + group.getName();
+        GroupMessage groupMessage = new GroupMessage(message, group, groupOwner, sender);
+        groupMessageRepository.save(groupMessage);
+
+        return ResponseEntity.ok("그룹 가입 신청이 소유자에게 전송되었습니다.");
     }
 }

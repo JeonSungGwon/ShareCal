@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -168,6 +170,39 @@ public class GroupService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group ID: " + groupId));
         System.out.println(myGroup.getName());
         return modelMapper.map(myGroup, GroupDto.class);
+    }
+
+    public List<GroupDto> getMyGroups(){
+        MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
+        Member member = memberRepository.findById(myInfoBySecurity.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+
+        List<MyGroup> ownedGroups = member.getOwnedGroups();
+        List<MyGroup> memberGroups = member.getMemberGroups().stream()
+                .map(MemberGroup::getGroup)
+                .collect(Collectors.toList());
+
+        List<GroupDto> groupDtos = new ArrayList<>();
+
+        for (MyGroup group : ownedGroups) {
+            List<Member> members = group.getMemberGroups().stream()
+                    .map(MemberGroup::getMember)
+                    .collect(Collectors.toList());
+            GroupDto groupDto = new GroupDto(group.getId(), group.getName(), group.getOwner().getId(), members, group.getSharedCode());
+            groupDtos.add(groupDto);
+        }
+
+        for (MyGroup group : memberGroups) {
+            if (!ownedGroups.contains(group)) {
+                List<Member> members = group.getMemberGroups().stream()
+                        .map(MemberGroup::getMember)
+                        .collect(Collectors.toList());
+                GroupDto groupDto = new GroupDto(group.getId(), group.getName(), group.getOwner().getId(), members, group.getSharedCode());
+                groupDtos.add(groupDto);
+            }
+        }
+
+        return groupDtos;
     }
 
 }

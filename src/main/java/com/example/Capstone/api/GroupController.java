@@ -85,35 +85,9 @@ public class GroupController {
 
     @GetMapping("/mygroups")
     @Operation(summary = "자신이 소속된 그룹 모두 가져오기")
-    public List<GroupDto> getMyGroup() {
-        MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
-        Member member = memberRepository.findById(myInfoBySecurity.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+    public ResponseEntity<List<GroupDto>> getMyGroup() {
+        List<GroupDto> groupDtos = groupService.getMyGroups();
+        return ResponseEntity.ok(groupDtos);
 
-        List<MyGroup> ownedGroups = member.getOwnedGroups();
-        List<MyGroup> memberGroups = member.getMemberGroups().stream()
-                .map(MemberGroup::getGroup)
-                .collect(Collectors.toList());
-        List<GroupDto> groupDtos = new ArrayList<>();
-
-        for (MyGroup group : ownedGroups) {
-            List<Member> members = group.getMemberGroups().stream()
-                    .map(MemberGroup::getMember)
-                    .collect(Collectors.toList());
-            GroupDto groupDto = new GroupDto(group.getId(), group.getName(), group.getOwner().getId(), members, group.getSharedCode());
-            groupDtos.add(groupDto);
-        }
-
-        for (MyGroup group : memberGroups) {
-            if (!ownedGroups.contains(group)) {
-                List<Member> members = group.getMemberGroups().stream()
-                        .map(MemberGroup::getMember)
-                        .collect(Collectors.toList());
-                GroupDto groupDto = new GroupDto(group.getId(), group.getName(), group.getOwner().getId(), members, group.getSharedCode());
-                groupDtos.add(groupDto);
-            }
-        }
-
-        return groupDtos;
     }
 }

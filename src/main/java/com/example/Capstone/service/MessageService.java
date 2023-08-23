@@ -112,7 +112,6 @@ public class MessageService {
         } else {
             return new IllegalArgumentException("유저 정보가 일치하지 않습니다.");
         }
-
-
     }
+
 }
