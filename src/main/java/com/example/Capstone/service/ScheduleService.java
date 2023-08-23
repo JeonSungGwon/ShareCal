@@ -189,11 +189,11 @@ public class ScheduleService {
         if(scheduleDto.getBackgroundColor() != null && !scheduleDto.getBackgroundColor().isEmpty()){
             schedule.setBackgroundColor(scheduleDto.getBackgroundColor());
         }
-        if(scheduleDto.getStartDateTime() != null) {
-            schedule.setStartDateTime(scheduleDto.getStartDateTime());
+        if(scheduleDto.getStart() != null) {
+            schedule.setStartDateTime(scheduleDto.getStart());
         }
-        if(scheduleDto.getEndDateTime() != null) {
-            schedule.setEndDateTime(scheduleDto.getEndDateTime());
+        if(scheduleDto.getEnd() != null) {
+            schedule.setEndDateTime(scheduleDto.getEnd());
         }
         if(scheduleDto.getAlarmDateTime() != null){
             if(schedule.isAlarm()){

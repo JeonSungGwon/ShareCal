@@ -53,7 +53,7 @@ public class GroupSchedule {
     private void setEndDateTimeFromStart() {
         if (startDateTime != null && endDateTime == null) {
             // Set endDateTime as startDateTime + 1 hour (for example)
-            endDateTime = startDateTime.plusHours(1); // You can change the duration as needed
+            endDateTime = startDateTime; // You can change the duration as needed
         }
     }
 

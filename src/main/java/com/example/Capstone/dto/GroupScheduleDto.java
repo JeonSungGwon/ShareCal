@@ -16,8 +16,8 @@ public class GroupScheduleDto {
     private String title;
     private String content;
     private String backgroundColor;
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private LocalDateTime start;
+    private LocalDateTime end;
     private LocalDateTime alarmDateTime;
 
     private boolean alarm;
@@ -28,7 +28,7 @@ public class GroupScheduleDto {
     public GroupScheduleDto() {
         this.id = null;
         this.title = "";
-        this.startDateTime = LocalDateTime.now();
-        this.endDateTime = LocalDateTime.now().plusHours(1);
+        this.start = LocalDateTime.now();
+        this.end = LocalDateTime.now().plusMinutes(1);
     }
 }

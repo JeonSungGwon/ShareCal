@@ -21,7 +21,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
-        return testDocket("testApi", (s) -> true);
+        return testDocket("API", (s) -> true);
     }
 
     private Docket testDocket(String groupName, Predicate<String> selector) {

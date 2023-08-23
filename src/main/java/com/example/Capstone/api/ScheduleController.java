@@ -11,7 +11,10 @@ import com.example.Capstone.repository.MemberRepository;
 import com.example.Capstone.repository.SharedScheduleRepository;
 import com.example.Capstone.service.MemberService;
 import com.example.Capstone.service.ScheduleService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +31,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/schedules")
-@ApiOperation(value = "개인 일정")
+@Api(tags = "개인일정")
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
@@ -52,26 +55,31 @@ public class ScheduleController {
     }
 
     @GetMapping("/user")
+    @Operation(summary = "내 일정 불러오기")
     public List<ScheduleDto> getMySchedules() {
         return scheduleService.getMySchedules();
     }
 
     @GetMapping("")
+    @Operation(summary = "DB에 있는 모든 일정 불러오기")
     public List<ScheduleDto> getAllSchedules() {
         return scheduleService.getAllSchedules();
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "해당하는 스케줄 정보 불러오기")
     public ScheduleDto getScheduleById(@PathVariable Long id) {
         return scheduleService.getScheduleById(id);
     }
 
     @PostMapping("")
+    @Operation(summary = "스케줄 생성")
     public ScheduleDto createSchedule(@RequestBody ScheduleDto scheduleDto) {
         return scheduleService.createSchedule(scheduleDto);
     }
 
     @PostMapping("/shared")
+    @Operation(summary = "공유 스케줄 생성", description = "상대가 메시지를 승인해야 상대와 공유 됨")
     public ResponseEntity<ScheduleDto> createSharedSchedule(@RequestBody ScheduleDto scheduleDto,
                                                             @RequestParam List<String> sharedWithIds) {
         ScheduleDto savedSchedule = scheduleService.createSharedSchedule(scheduleDto, sharedWithIds);
@@ -79,11 +87,13 @@ public class ScheduleController {
     }
 
     @PatchMapping("/{id}")
+    @Operation(summary = "스케줄 수정")
     public ScheduleDto updateSchedule(@PathVariable Long id, @RequestBody ScheduleDto scheduleDto,@RequestParam(required = false) MultipartFile image) {
         return scheduleService.updateSchedule(id, scheduleDto, image);
     }
 
     @PatchMapping("/image/{id}")
+    @Operation(summary = "스케줄 안에서 이미지 데이터 입력 및 수정")
     public ScheduleDto updateImage(@PathVariable Long id,@RequestParam(required = false) MultipartFile image) {
         return scheduleService.updateImage(id, image);
     }

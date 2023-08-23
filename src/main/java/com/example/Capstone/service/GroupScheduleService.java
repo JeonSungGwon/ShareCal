@@ -69,8 +69,8 @@ public class GroupScheduleService {
                 .title(groupScheduleDto.getTitle())
                 .content(groupScheduleDto.getContent())
                 .backgroundColor(groupScheduleDto.getBackgroundColor())
-                .startDateTime(groupScheduleDto.getStartDateTime())
-                .endDateTime(groupScheduleDto.getEndDateTime())
+                .startDateTime(groupScheduleDto.getStart())
+                .endDateTime(groupScheduleDto.getEnd())
                 .alarm(groupScheduleDto.isAlarm())
                 .alarmDateTime(groupScheduleDto.getAlarmDateTime())
                 .myGroup(myGroup)
@@ -96,11 +96,11 @@ public class GroupScheduleService {
         if (groupScheduleDto.getBackgroundColor() != null && !groupScheduleDto.getBackgroundColor().isEmpty()){
             groupSchedule.setBackgroundColor(groupScheduleDto.getBackgroundColor());
         }
-        if (groupScheduleDto.getStartDateTime() != null) {
-            groupSchedule.setStartDateTime(groupScheduleDto.getStartDateTime());
+        if (groupScheduleDto.getStart() != null) {
+            groupSchedule.setStartDateTime(groupScheduleDto.getStart());
         }
-        if (groupScheduleDto.getEndDateTime() != null) {
-            groupSchedule.setEndDateTime(groupScheduleDto.getEndDateTime());
+        if (groupScheduleDto.getEnd() != null) {
+            groupSchedule.setEndDateTime(groupScheduleDto.getEnd());
         }
 
         if (groupScheduleDto.getGroupId() != null) {
@@ -172,8 +172,8 @@ public class GroupScheduleService {
         groupScheduleDto.setId(groupSchedule.getId());
         groupScheduleDto.setTitle(groupSchedule.getTitle());
         groupScheduleDto.setBackgroundColor(groupScheduleDto.getBackgroundColor());
-        groupScheduleDto.setStartDateTime(groupSchedule.getStartDateTime());
-        groupScheduleDto.setEndDateTime(groupSchedule.getEndDateTime());
+        groupScheduleDto.setStart(groupSchedule.getStartDateTime());
+        groupScheduleDto.setEnd(groupSchedule.getEndDateTime());
         groupScheduleDto.setGroupId(groupSchedule.getMyGroup().getId());
         groupScheduleDto.setAlarmDateTime(groupSchedule.getAlarmDateTime());
         groupScheduleDto.setAlarm(groupSchedule.isAlarm());

@@ -13,7 +13,10 @@ import com.example.Capstone.repository.GroupRepository;
 import com.example.Capstone.repository.MemberRepository;
 import com.example.Capstone.service.GroupService;
 import com.example.Capstone.service.MemberService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +30,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/groups")
-@ApiOperation(value = "그룹 CRUD")
+@Api(tags = "그룹")
 public class GroupController {
 
     @Autowired
@@ -41,6 +44,7 @@ public class GroupController {
 
 
     @PostMapping("")
+    @Operation(summary = "그룹 생성")
     public ResponseEntity<GroupDto> createGroup(@RequestBody GroupDto groupDto) {
         Long groupId = groupService.createGroup(groupDto);
         GroupDto savedGroupDto = groupService.getGroup(groupId);
@@ -48,6 +52,7 @@ public class GroupController {
     }
 
     @DeleteMapping("owner/{groupId}")
+    @Operation(summary = "그룹 삭제", description = "owner만 삭제할 수 있음")
     public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
         groupService.deleteGroup(groupId);
         return ResponseEntity.ok().build();
@@ -60,12 +65,14 @@ public class GroupController {
     // }
 
     @DeleteMapping("/{groupId}/members/{memberId}")
+    @Operation(summary = "그룹 나가기")
     public ResponseEntity<Void> removeMemberFromGroup(@PathVariable Long groupId, @PathVariable Long memberId) {
         groupService.removeMemberFromGroup(groupId, memberId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/groups/{groupId}")
+    @Operation(summary = "해당하는 그룹 가져오가")
     public ResponseEntity<GroupDto> getGroup(@PathVariable Long groupId) {
         GroupDto groupDto;
         try {
@@ -77,6 +84,7 @@ public class GroupController {
     }
 
     @GetMapping("/mygroups")
+    @Operation(summary = "자신이 소속된 그룹 모두 가져오기")
     public List<GroupDto> getMyGroup() {
         MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
         Member member = memberRepository.findById(myInfoBySecurity.getId())

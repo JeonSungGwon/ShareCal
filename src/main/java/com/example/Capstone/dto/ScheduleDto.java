@@ -17,9 +17,9 @@ public class ScheduleDto {
     private String backgroundColor;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime startDateTime;
+    private LocalDateTime start;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime endDateTime;
+    private LocalDateTime end;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime alarmDateTime;
@@ -33,15 +33,15 @@ public class ScheduleDto {
         this.id = null;
         this.title = "";
         this.content = "";
-        this.startDateTime = LocalDateTime.now();
-        this.endDateTime = LocalDateTime.now().plusHours(1);
+        this.start = LocalDateTime.now();
+        this.end = LocalDateTime.now().plusHours(1);
     }
 
-    public  ScheduleDto(String title, String content, LocalDateTime startDateTime, LocalDateTime endDateTime){
+    public  ScheduleDto(String title, String content, LocalDateTime start, LocalDateTime end){
         this.title = title;
         this.content = content;
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+        this.start = start;
+        this.end = end;
     }
 
 }
