@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/messages")
-@Api(tags = "메시지")
+@Api(tags = "단일 메시지")
 @RequiredArgsConstructor
 public class MessageController {
     private final MessageService messageService;
