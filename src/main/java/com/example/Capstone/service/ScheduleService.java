@@ -58,7 +58,7 @@ public class ScheduleService {
         this.messageServices = messageService;
         this.imageRepository = imageRepository;
         this.commentRepository = commentRepository;
-        this.messageService = NurigoApp.INSTANCE.initialize("NNCS2BMVBWFTKKX73", "K7W3ISJNHCEOIWA89W1IYDFMFHBFXLJY", "https://api.coolsms.co.kr");
+        this.messageService = NurigoApp.INSTANCE.initialize("NCS2BMVBWFTKKX73", "K7W3ISJNHCEOIWA89W1IYDFMFHBFXLJY", "https://api.coolsms.co.kr");
     }
 
     public List<ScheduleDto> getAllSchedules() {
