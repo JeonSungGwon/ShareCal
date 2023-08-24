@@ -11,16 +11,16 @@ public class GroupMessageDto {
     private Long id;
     private String message;
     private Long groupId;
-    private String grounName;
+    private String groupName;
     private String email;
     private String memberName;
     private Long ownerId;
     private String sharedCode;
-    public GroupMessageDto(Long id, String message, Long groupId, String grounName, String email, String memberName, Long ownerId, String sharedCode) {
+    public GroupMessageDto(Long id, String message, Long groupId, String groupName, String email, String memberName, Long ownerId, String sharedCode) {
         this.id = id;
         this.message = message;
         this.groupId = groupId;
-        this.grounName = grounName;
+        this.groupName = groupName;
         this.email = email;
         this.memberName = memberName;
         this.ownerId = ownerId;
