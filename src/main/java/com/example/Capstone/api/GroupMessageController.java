@@ -57,7 +57,7 @@ public class GroupMessageController {
 
         List<GroupMessage> messages = groupMessageRepository.findByOwner(member);
         return messages.stream()
-                .map(message -> new GroupMessageDto(message.getId(), message.getMessage(), message.getGroup().getId(), message.getSender().getEmail(), message.getSender().getNickname(), message.getOwner().getId(), message.getGroup().getSharedCode()))
+                .map(message -> new GroupMessageDto(message.getId(), message.getMessage(), message.getGroup().getId(), message.getGroup().getName(), message.getSender().getEmail(), message.getSender().getNickname(), message.getOwner().getId(), message.getGroup().getSharedCode()))
                 .collect(Collectors.toList());
     }
 
