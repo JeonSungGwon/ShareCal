@@ -12,7 +12,7 @@
 - Github actions
 - Swagger
 
-### 아키텍처
+### ⚙️Architecture
 <img width="859" alt="image" src="https://github.com/JeonSungGwon/Capstone/assets/129651243/25a0c297-7b3e-4af3-a8ff-6efa32e9d01f">
 
 
