@@ -33,7 +33,7 @@ public class GroupMessageService {
 
 
         Message message = new Message();
-        message.setReceiver(receiver); //test
+        message.setReceiver(receiver);
         message.setSender(sender);
 
         SharedSchedule sharedSchedule = sharedScheduleRepository.findById(messageDto.getSharedScheduleId()).orElse(null);
