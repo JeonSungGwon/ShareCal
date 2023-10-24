@@ -22,7 +22,7 @@ public class GroupMessageService {
     private final GroupRepository groupRepository;
     private final GroupMessageRepository groupMessageRepository;
 
-    private final MemberService memberService; //
+    private final MemberService memberService;
 
     @Transactional
     public MessageDto write(MessageDto messageDto) {
